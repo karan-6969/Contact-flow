@@ -12,24 +12,26 @@ if(location.pathname.indexOf('/app')===0)document.documentElement.classList.add(
 </script>
 <style>
 /* ==========================================================================
-   MOBILE-FIRST STRICT BLACK & WHITE MONOCHROME THEME
+   STRICT BLACK & WHITE MONOCHROME STUDIO ARCHITECTURE
+   Web / Desktop: 2-column studio layout (contacts queue on left, wheel on right)
+   Mobile: Native iOS contacts list, tap-to-categorize, and separate Pie Chart tab
    The Pie Chart Wheel is the SINGLE focal element that possesses color.
    ========================================================================== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
 :root{
   --bg-void:#000000;
-  --bg-surface:#080808;
-  --bg-card:#111111;
-  --bg-card-hover:#171717;
-  --bg-sheet:#121212;
-  --border-hairline:rgba(255,255,255,0.07);
-  --border-subtle:rgba(255,255,255,0.12);
+  --bg-sidebar:#070707;
+  --bg-card:#0D0D0D;
+  --bg-card-hover:#141414;
+  --border-hairline:rgba(255,255,255,0.06);
+  --border-subtle:rgba(255,255,255,0.11);
   --border-medium:rgba(255,255,255,0.22);
   --border-white:rgba(255,255,255,0.45);
   --text-pure:#FFFFFF;
   --text-muted:#8E8E93;
   --text-dim:#55555A;
+  --text-faint:#333336;
   --font-sans:-apple-system,BlinkMacSystemFont,"Plus Jakarta Sans","SF Pro Display","Inter",sans-serif;
   --font-mono:"JetBrains Mono","SF Mono",monospace;
 }
@@ -54,8 +56,8 @@ button{cursor:pointer;border:0;background:none}
   background:#FFFFFF;
   color:#000000;
   border-radius:999px;
-  padding:10px 22px;
-  font-size:13.5px;
+  padding:9px 20px;
+  font-size:13px;
   font-weight:700;
   display:inline-flex;
   align-items:center;
@@ -73,7 +75,7 @@ button{cursor:pointer;border:0;background:none}
   border:1px solid var(--border-subtle);
   color:#FFFFFF;
   border-radius:999px;
-  padding:9px 18px;
+  padding:8px 18px;
   font-size:13px;
   font-weight:600;
   display:inline-flex;
@@ -105,7 +107,7 @@ button{cursor:pointer;border:0;background:none}
    LANDING VIEW
    ========================================================================== */
 .isapp #land,#app{display:none}
-.isapp #app{display:flex}
+.isapp #app{display:grid}
 
 #land{
   min-height:100vh;
@@ -179,82 +181,65 @@ nav.landing-nav{
 }
 
 /* ==========================================================================
-   APP WORKSPACE: MOBILE-FIRST STUDIO
+   APP WORKSPACE: RESPONSIVE DUAL MODE ARCHITECTURE
    ========================================================================== */
 #app{
   width:100%;
-  max-width:540px;
   height:100vh;
-  margin:0 auto;
   position:relative;
-  display:flex;
-  flex-direction:column;
   background:var(--bg-void);
-  border-left:1px solid var(--border-hairline);
-  border-right:1px solid var(--border-hairline);
-  box-shadow:0 0 80px rgba(0,0,0,0.8);
 }
 
-/* --- Top Sticky App Bar --- */
-.app-header{
-  padding:16px 20px 12px;
+/* --- Left Sidebar (Contacts Queue on Web / Contacts View on Mobile) --- */
+#contacts-bar{
+  background:var(--bg-sidebar);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  position:relative;
+}
+
+.cbar-header{
+  padding:18px 20px 14px;
   display:flex;
   flex-direction:column;
   gap:12px;
-  background:rgba(0,0,0,0.85);
-  backdrop-filter:blur(24px);
   border-bottom:1px solid var(--border-hairline);
-  position:relative;
-  z-index:20;
+  background:var(--bg-sidebar);
 }
-.header-top-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.header-brand{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-weight:800;
-  font-size:17px;
-  letter-spacing:-0.035em;
-  color:#FFFFFF;
-}
-.header-brand-dot{width:8px;height:8px;border-radius:50%;background:#FFFFFF}
-.header-badge{
-  font-size:11px;
+
+.brand-row{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:16px;letter-spacing:-0.035em;color:#FFFFFF}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:#FFFFFF}
+.brand-pill{
+  font-size:10px;
   font-family:var(--font-mono);
   font-weight:700;
   padding:2px 8px;
   border-radius:999px;
-  background:#141414;
+  background:#121212;
   border:1px solid var(--border-hairline);
   color:var(--text-muted);
 }
-.header-actions{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
+.header-actions{display:flex;align-items:center;gap:8px}
 
-/* Spotlight-style Search Input */
-.search-bar{
+/* Spotlight Search */
+.mono-search{
   display:flex;
   align-items:center;
   gap:9px;
-  background:#121212;
+  background:#111111;
   border:1px solid var(--border-hairline);
   border-radius:12px;
-  padding:9px 14px;
+  padding:8px 14px;
   transition:border-color .18s, background .18s;
 }
-.search-bar:focus-within{border-color:var(--border-white);background:#161616}
-.search-bar input{border:0;background:none;flex:1;outline:0;font-size:13.5px;color:#FFFFFF}
-.search-bar input::placeholder{color:var(--text-dim)}
-.search-bar svg{color:var(--text-dim);flex:none}
+.mono-search:focus-within{border-color:var(--border-white);background:#161616}
+.mono-search input{border:0;background:none;flex:1;outline:0;font-size:13px;color:#FFFFFF}
+.mono-search input::placeholder{color:var(--text-dim)}
+.mono-search svg{color:var(--text-dim);flex:none}
 
-/* Segmented Filter Control */
+/* Segmented Control Tabs */
 .segmented-control{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -295,18 +280,14 @@ nav.landing-nav{
 }
 .seg-tab.active .seg-badge{background:#000000;color:#FFFFFF}
 
-/* Secondary Filter / Sort Bar */
-.filter-sub-bar{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
+/* Minimalist Filter Bar */
+.cbar-filters{display:flex;align-items:center;gap:8px}
 .custom-select{
   flex:1;
   min-width:0;
   appearance:none;
   -webkit-appearance:none;
-  background-color:#121212;
+  background-color:#111111;
   background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat;
   background-position:right 10px center;
@@ -322,47 +303,33 @@ nav.landing-nav{
 }
 .custom-select:hover{border-color:var(--border-subtle);color:#FFFFFF}
 
-/* ==========================================================================
-   APP SCREENS CONTAINER
-   ========================================================================== */
-.screens-viewport{
+/* Scrollable Contact Queue */
+.contact-list{
   flex:1;
-  overflow:hidden;
-  position:relative;
-  display:flex;
-}
-.app-page{
-  position:absolute;
-  inset:0;
-  display:none;
-  flex-direction:column;
   overflow-y:auto;
   overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-}
-.app-page.active{display:flex}
-.app-page::-webkit-scrollbar{width:4px}
-.app-page::-webkit-scrollbar-thumb{background:#222222;border-radius:4px}
-
-/* --- PAGE 1: NORMAL CONTACTS LIST --- */
-#page-contacts{
-  padding:14px 18px 90px;
+  padding:14px 18px;
+  display:flex;
+  flex-direction:column;
   gap:8px;
 }
+.contact-list::-webkit-scrollbar{width:4px}
+.contact-list::-webkit-scrollbar-thumb{background:#222222;border-radius:4px}
 
-/* Contact Card (Clean Apple Contacts Style) */
+/* --- Monochrome Contact Card --- */
 .contact-card{
   background:var(--bg-card);
   border:1px solid var(--border-hairline);
   border-radius:14px;
-  padding:12px 14px;
+  padding:11px 14px;
   display:flex;
   align-items:center;
   gap:12px;
   cursor:pointer;
   user-select:none;
   position:relative;
-  transition:transform .2s cubic-bezier(0.16,1,0.3,1), border-color .18s, background .18s, opacity .24s, max-height .28s;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+  transition:transform .18s cubic-bezier(0.16,1,0.3,1), border-color .18s, background .18s, opacity .25s, max-height .28s;
 }
 .contact-card:hover{
   background:var(--bg-card-hover);
@@ -370,8 +337,9 @@ nav.landing-nav{
   transform:translateY(-1px);
 }
 .contact-card:active{transform:scale(0.985);background:#1C1C1C}
+.contact-card.is-dragging{opacity:0.25;transform:scale(0.97)}
 
-/* Smooth Slide-Out Disappearance Animation when assigned */
+/* Smooth Slide-Out Disappearance Animation when placed */
 .contact-card.slide-out-disappear{
   transform:translateX(105%) scale(0.85);
   opacity:0;
@@ -384,14 +352,25 @@ nav.landing-nav{
   transition:all .28s cubic-bezier(0.16,1,0.3,1);
 }
 
+.c-grip{
+  color:var(--text-faint);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:none;
+  opacity:0.5;
+  transition:opacity .15s, color .15s;
+}
+.contact-card:hover .c-grip{opacity:1;color:var(--text-muted)}
+
 .c-avatar{
-  width:40px;
-  height:40px;
+  width:38px;
+  height:38px;
   border-radius:50%;
   background:radial-gradient(circle at top, #282828, #121212);
   color:#FFFFFF;
   font-weight:700;
-  font-size:13px;
+  font-size:12.5px;
   display:grid;
   place-items:center;
   flex:none;
@@ -399,8 +378,8 @@ nav.landing-nav{
   border:1px solid var(--border-hairline);
 }
 .c-info{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
-.c-name{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#FFFFFF}
-.c-meta{font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-name{font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#FFFFFF}
+.c-meta{font-size:11.5px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .c-cat-mono-pill{
   display:inline-flex;
   align-items:center;
@@ -411,36 +390,30 @@ nav.landing-nav{
   border-radius:999px;
   margin-top:3px;
   max-width:fit-content;
-  background:#181818;
+  background:#161616;
   border:1px solid var(--border-hairline);
   color:var(--text-muted);
 }
 .c-cat-mono-pill .mono-dot{width:5px;height:5px;border-radius:50%;background:#FFFFFF}
 
-.c-right-actions{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  flex:none;
-}
+.c-right-actions{display:flex;align-items:center;gap:6px;flex:none}
 .btn-assign-hint{
-  font-size:11px;
+  font-size:10.5px;
   font-weight:700;
   color:var(--text-muted);
-  background:#181818;
+  background:#161616;
   border:1px solid var(--border-hairline);
-  padding:4px 10px;
+  padding:3px 9px;
   border-radius:999px;
   transition:all .15s;
 }
-.contact-card:hover .btn-assign-hint{
-  background:#FFFFFF;
-  color:#000000;
-}
+.contact-card:hover .btn-assign-hint{background:#FFFFFF;color:#000000}
+
 .star-btn{
   background:none;
   border:0;
   color:var(--text-dim);
+  font-size:16px;
   line-height:1;
   padding:6px;
   border-radius:6px;
@@ -448,6 +421,29 @@ nav.landing-nav{
 }
 .star-btn:hover{color:#FFFFFF;transform:scale(1.15)}
 .star-btn.active{color:#FFFFFF}
+
+/* Sidebar Footer (Profile) */
+.cbar-footer{
+  padding:14px 20px;
+  border-top:1px solid var(--border-hairline);
+  background:var(--bg-sidebar);
+}
+.user-chip{display:flex;align-items:center;gap:11px}
+.u-av{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#161616;
+  display:grid;
+  place-items:center;
+  font-weight:700;
+  font-size:12px;
+  color:#FFFFFF;
+  border:1px solid var(--border-hairline);
+}
+.u-info{flex:1;min-width:0}
+.u-name{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#FFFFFF}
+.u-email{display:block;font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* Empty Queue States */
 .c-empty{
@@ -460,49 +456,60 @@ nav.landing-nav{
   color:var(--text-muted);
 }
 .c-empty-icon{
-  width:56px;
-  height:56px;
+  width:54px;
+  height:54px;
   border-radius:50%;
-  background:#141414;
+  background:#121212;
   border:1px solid var(--border-hairline);
   display:grid;
   place-items:center;
-  font-size:22px;
+  font-size:20px;
   color:#FFFFFF;
 }
-.c-empty h4{font-size:17px;font-weight:700;color:#FFFFFF}
-.c-empty p{font-size:13px;max-width:260px;line-height:1.5;color:var(--text-muted)}
+.c-empty h4{font-size:16px;font-weight:700;color:#FFFFFF}
+.c-empty p{font-size:13px;max-width:250px;line-height:1.5;color:var(--text-muted)}
 
-/* --- PAGE 2: SEPARATE PIE CHART PAGE --- */
-#page-chart{
-  padding:20px 20px 96px;
-  align-items:center;
-  justify-content:center;
-  background:radial-gradient(circle 500px at 50% 45%, rgba(255,255,255,0.02), transparent 75%), #000000;
+/* ==========================================================================
+   MAIN CANVAS: THE VIBRANT PIE CHART RADIAL CANVAS
+   ========================================================================== */
+#wheel-stage{
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  background:radial-gradient(circle 600px at 50% 50%, rgba(255,255,255,0.02), transparent 75%), #000000;
 }
-.chart-page-header{
-  width:100%;
+
+.stage-top-bar{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-bottom:14px;
-}
-.chart-title-wrap h2{font-size:1.7rem;font-weight:800;letter-spacing:-0.035em;color:#FFFFFF}
-.chart-title-wrap p{font-size:12.5px;color:var(--text-muted);margin-top:2px}
-
-.pie-container{
+  margin-bottom:12px;
+  z-index:10;
   width:100%;
+}
+.stage-title-wrap h2{
+  font-size:clamp(1.7rem,2.8vw,2.4rem);
+  font-weight:800;
+  letter-spacing:-0.04em;
+  color:#FFFFFF;
+}
+.stage-sub{font-size:13px;color:var(--text-muted);margin-top:3px}
+.stage-actions{display:flex;gap:10px;align-items:center}
+
+/* Wheel Canvas Area */
+.pie-container{
+  flex:1;
+  min-height:0;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   position:relative;
-  margin:auto 0;
 }
+
 .pie-svg{
-  width:min(420px, 54vh);
-  height:min(420px, 54vh);
   max-width:100%;
+  max-height:100%;
   overflow:visible;
   user-select:none;
 }
@@ -518,10 +525,18 @@ nav.landing-nav{
   stroke:#000000;
   stroke-width:3.5px;
 }
-.pie-slice:hover,.pie-slice.is-active{
+.pie-slice:hover,.pie-slice.is-over{
   transform:scale(1.045);
   filter:drop-shadow(0 0 28px var(--slice-color, #FFFFFF)) drop-shadow(0 14px 34px rgba(0,0,0,0.9));
 }
+.pie-slice.is-over path{
+  stroke:#FFFFFF;
+  stroke-width:3.5px;
+  stroke-dasharray:7 4;
+  animation:slicePulse 1.2s infinite linear;
+}
+@keyframes slicePulse{to{stroke-dashoffset:-22}}
+
 .slice-text{
   pointer-events:none;
   font-family:var(--font-sans);
@@ -539,8 +554,11 @@ nav.landing-nav{
   fill:rgba(255,255,255,0.88);
 }
 
-/* Center Hub */
-.center-hub{cursor:pointer;transition:transform .25s ease}
+/* --- Center Chronograph Hub (Monochrome Dial) --- */
+.center-hub{
+  cursor:pointer;
+  transition:transform .25s ease;
+}
 .center-hub-track{
   fill:none;
   stroke:rgba(255,255,255,0.06);
@@ -565,7 +583,16 @@ nav.landing-nav{
   stroke-width:2px;
   transition:all .2s;
 }
-.center-hub:hover .center-hub-bg{fill:#141414;stroke:#FFFFFF}
+.center-hub:hover .center-hub-bg,.center-hub.is-over .center-hub-bg{
+  fill:#141414;
+  stroke:#FFFFFF;
+}
+.center-hub.is-over{transform:scale(1.05)}
+.center-hub.is-over .center-hub-bg{
+  stroke-dasharray:6 4;
+  stroke-width:2.5px;
+}
+
 .center-stat-val{
   font-size:36px;
   font-weight:800;
@@ -586,16 +613,18 @@ nav.landing-nav{
   fill:var(--text-dim);
   font-family:var(--font-mono);
 }
+.center-drop-hint{pointer-events:none;transition:opacity .2s}
+.center-drop-title{font-size:15px;font-weight:800;fill:#FFFFFF}
+.center-drop-sub{font-size:11px;font-weight:600;fill:var(--text-muted)}
 
-/* Category Legend Dock under Wheel */
+/* --- Floating Category Dock / Legend (Bottom) --- */
 .category-dock{
   display:flex;
   align-items:center;
   justify-content:center;
   gap:8px;
   flex-wrap:wrap;
-  width:100%;
-  max-width:440px;
+  max-width:880px;
   margin-top:20px;
   padding:8px 12px;
   background:rgba(14,14,14,0.75);
@@ -640,24 +669,25 @@ nav.landing-nav{
   color:var(--text-muted);
 }
 
-/* --- PAGE 3: CATEGORIES MANAGER --- */
+/* ==========================================================================
+   MOBILE CATEGORIES LIST & BOTTOM TAB BAR
+   ========================================================================== */
 #page-categories{
-  padding:18px 20px 96px;
   display:none;
   flex-direction:column;
-  gap:12px;
+  gap:10px;
 }
 .cat-manager-header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-bottom:6px;
+  margin-bottom:8px;
 }
 .cat-item-row{
   background:var(--bg-card);
   border:1px solid var(--border-hairline);
   border-radius:14px;
-  padding:12px 16px;
+  padding:13px 16px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -670,11 +700,9 @@ nav.landing-nav{
 .cat-item-name{font-weight:700;font-size:14px;color:#FFFFFF}
 .cat-item-count{font-size:12px;color:var(--text-muted);font-family:var(--font-mono)}
 
-/* ==========================================================================
-   BOTTOM NAVIGATION BAR (iOS TAB BAR STYLE)
-   ========================================================================== */
+/* iOS Bottom Tab Bar */
 .bottom-tab-bar{
-  position:absolute;
+  position:fixed;
   bottom:0;
   left:0;
   right:0;
@@ -682,7 +710,7 @@ nav.landing-nav{
   background:rgba(10,10,10,0.88);
   backdrop-filter:blur(24px);
   border-top:1px solid var(--border-hairline);
-  display:grid;
+  display:none;
   grid-template-columns:repeat(3,1fr);
   z-index:30;
   padding-bottom:env(safe-area-inset-bottom);
@@ -809,47 +837,52 @@ nav.landing-nav{
 }
 
 /* ==========================================================================
-   CATEGORY CONTACTS DRAWER & MODALS
+   DRAWERS & DIALOGS
    ========================================================================== */
 .drawer{
   position:fixed;
   top:0;
   right:0;
   bottom:0;
-  width:100%;
-  max-width:540px;
+  width:min(440px,94vw);
   background:#0B0B0B;
+  border-left:1px solid var(--border-hairline);
   box-shadow:-20px 0 60px rgba(0,0,0,0.9);
   display:flex;
   flex-direction:column;
   z-index:80;
   translate:100% 0;
-  transition:translate .3s cubic-bezier(0.16,1,0.3,1);
+  transition:translate .32s cubic-bezier(0.16,1,0.3,1);
 }
 .drawer.open{translate:0 0}
 .drawer-header{
-  padding:18px 20px;
+  padding:22px 24px 18px;
   border-bottom:1px solid var(--border-hairline);
   display:flex;
   align-items:center;
   justify-content:space-between;
 }
-.cat-pill-badge{display:inline-flex;align-items:center;gap:9px;font-size:17px;font-weight:700;color:#FFFFFF}
+.cat-pill-badge{display:inline-flex;align-items:center;gap:9px;font-size:18px;font-weight:700;color:#FFFFFF}
+.cat-pill-badge i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.cdrawer-count{font-size:12px;color:var(--text-muted);font-family:var(--font-mono)}
 .drawer-actions-row{
   display:flex;
   gap:8px;
-  padding:10px 20px;
+  padding:12px 24px;
   border-bottom:1px solid var(--border-hairline);
-  background:#080808;
+  background:var(--bg-sidebar);
 }
 .drawer-body{
   flex:1;
   overflow-y:auto;
-  padding:16px 20px;
+  padding:18px 24px;
   display:flex;
   flex-direction:column;
   gap:8px;
 }
+.drawer-body::-webkit-scrollbar{width:4px}
+.drawer-body::-webkit-scrollbar-thumb{background:#222222;border-radius:4px}
+
 .drawer-contact-item{
   background:#121212;
   border:1px solid var(--border-hairline);
@@ -858,10 +891,12 @@ nav.landing-nav{
   display:flex;
   align-items:center;
   gap:12px;
+  transition:all .15s;
 }
+.drawer-contact-item:hover{border-color:var(--border-subtle);background:#171717}
 .drawer-item-info{flex:1;min-width:0}
-.drawer-item-name{font-size:13.5px;font-weight:600;color:#FFFFFF}
-.drawer-item-sub{font-size:11.5px;color:var(--text-muted)}
+.drawer-item-name{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#FFFFFF}
+.drawer-item-sub{font-size:11.5px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .btn-remove-cat{
   width:28px;
   height:28px;
@@ -871,24 +906,25 @@ nav.landing-nav{
   font-size:12px;
   color:var(--text-muted);
   border:1px solid var(--border-hairline);
+  transition:all .15s;
 }
-.btn-remove-cat:hover{color:#FFFFFF;border-color:#FFFFFF}
+.btn-remove-cat:hover{color:#FFFFFF;border-color:#FFFFFF;background:#222222}
 
-/* Monochrome Modal Dialog */
+/* Dialog */
 dialog{
   border:1px solid var(--border-hairline);
   border-radius:20px;
   background:#0E0E0E;
   color:#FFFFFF;
-  padding:24px;
+  padding:28px;
   width:min(440px,92vw);
   margin:auto;
   box-shadow:0 30px 90px rgba(0,0,0,0.95);
-  animation:dlgFade .2s ease;
+  animation:dlgFade .22s cubic-bezier(0.16,1,0.3,1);
 }
 dialog::backdrop{background:rgba(0,0,0,0.8);backdrop-filter:blur(8px)}
 @keyframes dlgFade{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
-dialog h3{font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:14px;color:#FFFFFF}
+dialog h3{font-size:1.55rem;font-weight:800;letter-spacing:-0.035em;margin-bottom:14px;color:#FFFFFF}
 dialog form,dialog>div{display:grid;gap:14px}
 dialog input[type=text],dialog input[type=search]{
   width:100%;
@@ -897,6 +933,7 @@ dialog input[type=text],dialog input[type=search]{
   border-radius:12px;
   padding:12px 14px;
   font-size:14px;
+  transition:border-color .15s;
   color:#FFFFFF;
 }
 dialog input:focus{border-color:#FFFFFF;outline:0}
@@ -917,19 +954,19 @@ dialog input:focus{border-color:#FFFFFF;outline:0}
 /* Toast Notification */
 #toast{
   position:fixed;
-  top:24px;
+  bottom:28px;
   left:50%;
-  translate:-50% -30px;
+  translate:-50% 30px;
   opacity:0;
   background:#141414;
   border:1px solid #333333;
   color:#FFFFFF;
-  padding:10px 20px;
+  padding:11px 22px;
   border-radius:999px;
-  font-size:13px;
+  font-size:13.5px;
   font-weight:600;
   display:flex;
-  gap:8px;
+  gap:10px;
   align-items:center;
   box-shadow:0 16px 40px rgba(0,0,0,0.8);
   transition:.28s cubic-bezier(0.16,1,0.3,1);
@@ -938,6 +975,114 @@ dialog input:focus{border-color:#FFFFFF;outline:0}
 }
 #toast.show{opacity:1;translate:-50% 0}
 .spin svg{animation:spin 1s linear infinite}@keyframes spin{to{rotate:360deg}}
+
+/* Particle FX */
+.particle-container{position:fixed;pointer-events:none;z-index:999}
+.particle{
+  position:absolute;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  animation:explode .65s ease forwards;
+}
+@keyframes explode{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES: WEB (>860px) VS MOBILE (<=860px)
+   ========================================================================= */
+
+/* --- WEB / DESKTOP (AS BEFORE: 2-COLUMN STUDIO) --- */
+@media (min-width: 861px) {
+  #app{
+    display:grid;
+    grid-template-columns:390px 1fr;
+    height:100vh;
+    max-width:100%;
+    border:none;
+  }
+  #contacts-bar{
+    display:flex !important;
+    height:100vh;
+    border-right:1px solid var(--border-hairline);
+    position:relative;
+    z-index:20;
+  }
+  #wheel-stage{
+    display:flex !important;
+    height:100vh;
+    position:relative;
+    padding:32px 52px;
+  }
+  .pie-svg{
+    width:min(640px,76vh);
+    height:min(640px,76vh);
+  }
+  .mobile-only{
+    display:none !important;
+  }
+  .desktop-only{
+    display:block;
+  }
+  .contact-card .btn-assign-hint{
+    display:none;
+  }
+}
+
+/* --- MOBILE ONLY (NATIVE CONTACTS LIST + SEPARATE PIE CHART TAB) --- */
+@media (max-width: 860px) {
+  #app{
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    width:100%;
+    max-width:100%;
+    border:none;
+    overflow:hidden;
+  }
+  .desktop-only{
+    display:none !important;
+  }
+  .mobile-only{
+    display:block;
+  }
+  .screen-view{
+    display:none;
+    flex:1;
+    height:calc(100vh - 68px);
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .screen-view.active{
+    display:flex !important;
+    flex-direction:column;
+  }
+  #contacts-bar{
+    height:calc(100vh - 68px);
+    border-right:none;
+  }
+  #wheel-stage{
+    height:calc(100vh - 68px);
+    padding:20px 20px 84px;
+    align-items:center;
+    justify-content:center;
+  }
+  .pie-svg{
+    width:min(420px,54vh);
+    height:min(420px,54vh);
+  }
+  #page-categories{
+    padding:20px 20px 84px;
+  }
+  #bottom-bar{
+    display:grid !important;
+  }
+  #toast{
+    bottom:80px;
+  }
+}
 </style>
 </head>
 <body>
@@ -949,16 +1094,16 @@ dialog input:focus{border-color:#FFFFFF;outline:0}
       <div class="nav-dot"></div>
       <span>ContactFlow</span>
     </a>
-    <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;gap:12px">
       <a class="btn-ghost" href="/api/auth/demo">Try Live Studio</a>
-      <a class="btn-white" href="/api/auth/google">Sign in</a>
+      <a class="btn-white" href="/api/auth/google">Sign in with Google</a>
     </div>
   </nav>
 
   <section class="hero">
-    <div class="hero-tag">Mobile Contact Studio</div>
+    <div class="hero-tag">Visual Contact Studio</div>
     <h1>Your network.<br>Balanced in flow.</h1>
-    <p class="lead">Tap any contact to instantly assign them to a category. Watch them organize into a separate, breathtaking radial spectrum with real-time analytics.</p>
+    <p class="lead">Drag contacts into categories on desktop, or tap to assign effortlessly on mobile. Watch your network balance in real time.</p>
     <div class="hero-btns">
       <a class="btn-white" href="/api/auth/google">Continue with Google</a>
       <a class="btn-ghost" href="/api/auth/demo">Launch Demo Studio →</a>
@@ -966,113 +1111,131 @@ dialog input:focus{border-color:#FFFFFF;outline:0}
   </section>
 </div>
 
-<!-- APP WORKSPACE (MOBILE-FIRST STUDIO SHELL) -->
+<!-- APP WORKSPACE -->
 <div id="app">
-  <!-- STICKY TOP APP BAR -->
-  <header class="app-header">
-    <div class="header-top-row">
-      <div class="header-brand">
-        <div class="header-brand-dot"></div>
-        <span>ContactFlow</span>
-        <span class="header-badge" id="app-badge">Live</span>
-      </div>
-      <div class="header-actions">
-        <button id="btn-sync" class="icon-btn" title="Sync Google Contacts">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 8a5.5 5.5 0 1 1-1.7-4M13.5 2.5V5.5h-3"/></svg>
-        </button>
-        <button id="btn-settings" class="icon-btn" title="Settings">⚙</button>
-      </div>
-    </div>
-
-    <!-- Search Input (Active on Contacts page) -->
-    <div class="search-bar" id="search-bar-wrap">
-      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg>
-      <input id="q" type="search" placeholder="Search contacts..." aria-label="Search contacts">
-      <button id="q-clear" style="display:none;color:var(--text-muted);font-size:11px">✕</button>
-    </div>
-
-    <!-- Filter Tabs (Active on Contacts page) -->
-    <div class="segmented-control" id="contacts-tabs-wrap">
-      <button class="seg-tab active" data-tab="unsorted">
-        <span>To Place</span>
-        <span class="seg-badge" id="badge-unsorted">0</span>
-      </button>
-      <button class="seg-tab" data-tab="all">
-        <span>All</span>
-        <span class="seg-badge" id="badge-all">0</span>
-      </button>
-      <button class="seg-tab" data-tab="fav">
-        <span>Starred</span>
-        <span class="seg-badge" id="badge-fav">0</span>
-      </button>
-    </div>
-
-    <!-- Sub Filters (Company & Sort) -->
-    <div class="filter-sub-bar" id="contacts-filters-wrap">
-      <select id="co-filter" class="custom-select" aria-label="Filter by company"><option value="">All Companies</option></select>
-      <select id="sort-filter" class="custom-select" style="max-width:110px" aria-label="Sort contacts">
-        <option value="az">A to Z</option>
-        <option value="za">Z to A</option>
-        <option value="new">Recent</option>
-      </select>
-    </div>
-  </header>
-
-  <!-- SCREEN VIEWPORT -->
-  <main class="screens-viewport">
-    <!-- PAGE 1: NORMAL CONTACTS LIST -->
-    <section id="page-contacts" class="app-page active">
-      <div id="contact-list" style="display:flex;flex-direction:column;gap:8px"></div>
-    </section>
-
-    <!-- PAGE 2: SEPARATE PIE CHART PAGE -->
-    <section id="page-chart" class="app-page">
-      <div class="chart-page-header">
-        <div class="chart-title-wrap">
-          <h2>Distribution</h2>
-          <p>Real-time radial spectrum of your network</p>
+  <!-- LEFT COLUMN ON WEB / CONTACTS SCREEN ON MOBILE -->
+  <aside id="contacts-bar" class="screen-view active">
+    <div class="cbar-header">
+      <div class="brand-row">
+        <div class="brand">
+          <div class="brand-dot"></div>
+          <span>ContactFlow</span>
+          <span class="brand-pill" id="app-badge">Live</span>
         </div>
-        <button class="btn-white" id="btn-chart-add-cat" style="padding:6px 16px;font-size:12px">
-          + Category
+        <div class="header-actions">
+          <button id="btn-sync" class="icon-btn" title="Sync from Google">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 8a5.5 5.5 0 1 1-1.7-4M13.5 2.5V5.5h-3"/></svg>
+          </button>
+          <button id="btn-settings" class="icon-btn" title="Settings">⚙</button>
+        </div>
+      </div>
+
+      <!-- Search Box -->
+      <div class="mono-search">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg>
+        <input id="q" type="search" placeholder="Search contacts..." aria-label="Search contacts">
+        <button id="q-clear" style="display:none;color:var(--text-muted);font-size:11px">✕</button>
+      </div>
+
+      <!-- Segmented Tabs -->
+      <div class="segmented-control">
+        <button class="seg-tab active" data-tab="unsorted">
+          <span>To Place</span>
+          <span class="seg-badge" id="badge-unsorted">0</span>
+        </button>
+        <button class="seg-tab" data-tab="all">
+          <span>All</span>
+          <span class="seg-badge" id="badge-all">0</span>
+        </button>
+        <button class="seg-tab" data-tab="fav">
+          <span>Starred</span>
+          <span class="seg-badge" id="badge-fav">0</span>
         </button>
       </div>
 
-      <!-- The Focused Interactive Donut Wheel -->
-      <div class="pie-container">
-        <svg id="pie-svg" viewBox="0 0 640 640" class="pie-svg">
-          <defs id="pie-defs"></defs>
-          <g id="pie-slices-group" transform="translate(320, 320)"></g>
-          
-          <!-- Center Chronograph Hub -->
-          <g id="pie-center-hub" transform="translate(320, 320)" class="center-hub">
-            <circle r="104" class="center-hub-bg"/>
-            <circle r="113" class="center-hub-track"/>
-            <circle r="113" class="center-hub-ring" id="center-progress-ring"/>
-            <g id="center-content">
-              <text class="center-stat-val" id="hub-pct" y="-8" text-anchor="middle">0%</text>
-              <text class="center-stat-lbl" y="16" text-anchor="middle">Organized</text>
-              <text class="center-stat-sub" id="hub-counts" y="36" text-anchor="middle">0 of 0</text>
-            </g>
+      <!-- Filters -->
+      <div class="cbar-filters">
+        <select id="co-filter" class="custom-select" aria-label="Filter by company"><option value="">All Companies</option></select>
+        <select id="sort-filter" class="custom-select" style="max-width:110px" aria-label="Sort contacts">
+          <option value="az">A to Z</option>
+          <option value="za">Z to A</option>
+          <option value="new">Recent</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Scrollable Contacts List -->
+    <div id="contact-list" class="contact-list" role="list"></div>
+
+    <!-- User Profile Footer (Desktop) -->
+    <div class="cbar-footer desktop-only">
+      <div class="user-chip">
+        <div id="user-avatar" class="u-av">U</div>
+        <div class="u-info">
+          <span class="u-name" id="user-name">User</span>
+          <span class="u-email" id="user-email">...</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT COLUMN ON WEB / PIE CHART TAB ON MOBILE -->
+  <main id="wheel-stage" class="screen-view">
+    <div class="stage-top-bar">
+      <div class="stage-title-wrap">
+        <div style="display:flex;align-items:center;gap:12px">
+          <h2>Distribution</h2>
+          <span class="brand-pill" id="categories-count-badge">Categories</span>
+        </div>
+        <p class="stage-sub desktop-only">Drag contacts from the left list onto any slice. Slices dynamically scale.</p>
+        <p class="stage-sub mobile-only">Real-time radial spectrum of your network</p>
+      </div>
+      <div class="stage-actions">
+        <button class="btn-white" id="btn-add-cat">
+          <span style="font-size:16px;line-height:1;margin-top:-1px">+</span> New Category
+        </button>
+      </div>
+    </div>
+
+    <!-- The Interactive Donut Wheel -->
+    <div class="pie-container">
+      <svg id="pie-svg" viewBox="0 0 640 640" class="pie-svg">
+        <defs id="pie-defs"></defs>
+        <g id="pie-slices-group" transform="translate(320, 320)"></g>
+        
+        <!-- Center Chronograph Hub (Drop Target on Desktop) -->
+        <g id="pie-center-hub" transform="translate(320, 320)" class="center-hub" data-drop="none">
+          <circle r="104" class="center-hub-bg"/>
+          <circle r="113" class="center-hub-track"/>
+          <circle r="113" class="center-hub-ring" id="center-progress-ring"/>
+          <g id="center-content">
+            <text class="center-stat-val" id="hub-pct" y="-8" text-anchor="middle">0%</text>
+            <text class="center-stat-lbl" y="16" text-anchor="middle">Organized</text>
+            <text class="center-stat-sub" id="hub-counts" y="36" text-anchor="middle">0 of 0</text>
           </g>
-        </svg>
+          <g id="center-drop-hint" class="center-drop-hint" opacity="0">
+            <text y="-3" text-anchor="middle" class="center-drop-title">Drop Here</text>
+            <text y="18" text-anchor="middle" class="center-drop-sub">to Uncategorize</text>
+          </g>
+        </g>
+      </svg>
 
-        <!-- Category Legend Pills -->
-        <div class="category-dock" id="category-dock"></div>
-      </div>
-    </section>
-
-    <!-- PAGE 3: CATEGORIES MANAGER -->
-    <section id="page-categories" class="app-page">
-      <div class="cat-manager-header">
-        <h2 style="font-size:1.5rem;font-weight:800;color:#FFFFFF">Categories</h2>
-        <button class="btn-white" id="btn-cat-add" style="padding:6px 16px;font-size:12px">+ New</button>
-      </div>
-      <div id="cat-manager-list" style="display:flex;flex-direction:column;gap:8px"></div>
-    </section>
+      <!-- Category Dock / Legend -->
+      <div class="category-dock" id="category-dock"></div>
+    </div>
   </main>
 
-  <!-- BOTTOM TAB NAVIGATION (iOS STYLE) -->
-  <nav class="bottom-tab-bar" id="bottom-bar">
+  <!-- MOBILE CATEGORIES MANAGER (TAB 3 ON MOBILE) -->
+  <section id="page-categories" class="screen-view mobile-only">
+    <div class="cat-manager-header">
+      <h2 style="font-size:1.5rem;font-weight:800;color:#FFFFFF">Categories</h2>
+      <button class="btn-white" id="btn-cat-add" style="padding:6px 16px;font-size:12px">+ New</button>
+    </div>
+    <div id="cat-manager-list" style="display:flex;flex-direction:column;gap:8px"></div>
+  </section>
+
+  <!-- iOS BOTTOM TAB BAR (VISIBLE ON MOBILE ONLY) -->
+  <nav class="bottom-tab-bar mobile-only" id="bottom-bar">
     <button class="tab-btn active" data-page="contacts">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -1099,14 +1262,14 @@ dialog input:focus{border-color:#FFFFFF;outline:0}
     </button>
   </nav>
 
-  <!-- QUICK ASSIGN BOTTOM SHEET -->
+  <!-- QUICK ASSIGN BOTTOM SHEET (TAP TO CATEGORIZE & DISAPPEAR) -->
   <div class="sheet-backdrop" id="sheet-backdrop"></div>
   <aside class="quick-sheet" id="quick-sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-header">
       <div class="sheet-title-box">
-        <h3 id="sheet-contact-name">Assign Contact</h3>
-        <p id="sheet-contact-sub">Tap a category to place this contact</p>
+        <h3 id="sheet-contact-name">Place Contact</h3>
+        <p id="sheet-contact-sub">Tap a category to organize this contact</p>
       </div>
       <button class="icon-btn" id="btn-close-sheet" style="width:30px;height:30px">✕</button>
     </div>
@@ -1118,23 +1281,26 @@ dialog input:focus{border-color:#FFFFFF;outline:0}
     </div>
   </aside>
 
-  <!-- Category Members Drawer -->
+  <!-- Right Drawer: Category Contacts View -->
   <aside id="cat-drawer" class="drawer" inert>
     <div class="drawer-header">
-      <div class="cat-pill-badge" id="cdrawer-pill">
-        <i id="cdrawer-dot" style="width:10px;height:10px;border-radius:50%;display:inline-block"></i>
-        <span id="cdrawer-name">Category</span>
+      <div class="drawer-title-wrap">
+        <div class="cat-pill-badge" id="cdrawer-pill">
+          <i id="cdrawer-dot"></i>
+          <span id="cdrawer-name">Category</span>
+        </div>
+        <span class="cdrawer-count" id="cdrawer-count">0 contacts</span>
       </div>
       <button class="icon-btn" id="btn-close-cdrawer">✕</button>
     </div>
     <div class="drawer-actions-row">
-      <button class="btn-ghost" id="btn-rename-cat" style="padding:4px 12px;font-size:11.5px">Edit</button>
-      <button class="btn-ghost" id="btn-delete-cat" style="padding:4px 12px;font-size:11.5px">Delete</button>
+      <button class="btn-ghost" id="btn-rename-cat" style="padding:5px 14px;font-size:12px">Edit Category</button>
+      <button class="btn-ghost" id="btn-delete-cat" style="padding:5px 14px;font-size:12px">Delete</button>
     </div>
     <div class="drawer-body" id="cdrawer-list"></div>
   </aside>
 
-  <!-- Contact Details Drawer -->
+  <!-- Right Drawer: Contact Details -->
   <aside id="panel" class="drawer" inert></aside>
 </div>
 
@@ -1162,10 +1328,11 @@ const S={
   syncing:false,
   loading:true,
   err:null,
+  dragContactId:null,
   assigningContactId:null
 };
 
-/* Vivid Palette for the Pie Chart slices (The ONLY color in the entire UI!) */
+/* Vivid Apple-like Palette for the Pie Chart slices (The ONLY color in the UI!) */
 const PIE_PALETTE=[
   '#6366F1', // Indigo
   '#0EA5E9', // Sky Blue
@@ -1198,7 +1365,7 @@ const api=async(p,o={})=>{
   return r.status===204?null:r.json();
 };
 
-/* Audio Pop on Assignment */
+/* Micro Audio Pop */
 function playAudioPing(freq=640){
   try{
     const ctx=new(window.AudioContext||window.webkitAudioContext)();
@@ -1214,6 +1381,26 @@ function playAudioPing(freq=640){
     osc.start();
     osc.stop(ctx.currentTime+0.23);
   }catch(e){}
+}
+
+/* Micro particle burst in slice color (Desktop drop) */
+function spawnParticles(x,y,color='#FFFFFF'){
+  const container=document.createElement('div');
+  container.className='particle-container';
+  container.style.left=x+'px';
+  container.style.top=y+'px';
+  document.body.appendChild(container);
+  for(let i=0;i<12;i++){
+    const p=document.createElement('span');
+    p.className='particle';
+    p.style.backgroundColor=color;
+    const rad=(i/12)*Math.PI*2;
+    const dist=22+Math.random()*36;
+    p.style.setProperty('--dx',Math.cos(rad)*dist+'px');
+    p.style.setProperty('--dy',Math.sin(rad)*dist+'px');
+    container.appendChild(p);
+  }
+  setTimeout(()=>container.remove(),700);
 }
 
 /* Toast */
@@ -1234,30 +1421,29 @@ const ini=n=>(n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpp
 const avHtml=(c,cl='')=>c.photo_url?`<img class="c-avatar ${cl}" src="${esc(c.photo_url)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<span class="c-avatar ${cl}">${esc(ini(c.name))}</span>`;
 
 /* ==========================================================================
-   PAGE NAVIGATION (BOTTOM TAB BAR)
+   MOBILE TAB SWITCHING (MOBILE ONLY)
    ========================================================================== */
-function switchPage(pageName){
+function switchMobilePage(pageName){
   S.page=pageName;
   try { history.replaceState(null, '', '#' + pageName); } catch(e){}
   $$('.tab-btn').forEach(btn=>btn.classList.toggle('active', btn.dataset.page===pageName));
-  $$('.app-page').forEach(page=>page.classList.toggle('active', page.id===`page-${pageName}`));
-
-  // Show/hide search & filter in header based on page
-  const isContacts = pageName==='contacts';
-  $('#search-bar-wrap').style.display = isContacts ? 'flex' : 'none';
-  $('#contacts-tabs-wrap').style.display = isContacts ? 'grid' : 'none';
-  $('#contacts-filters-wrap').style.display = isContacts ? 'flex' : 'none';
+  
+  if(window.innerWidth <= 860){
+    $('#contacts-bar').classList.toggle('active', pageName==='contacts');
+    $('#wheel-stage').classList.toggle('active', pageName==='chart');
+    $('#page-categories').classList.toggle('active', pageName==='categories');
+  }
 
   if(pageName==='chart') renderPieChart();
   if(pageName==='categories') renderCategoriesPage();
 }
 
 $$('.tab-btn').forEach(btn=>{
-  btn.onclick=()=>switchPage(btn.dataset.page);
+  btn.onclick=()=>switchMobilePage(btn.dataset.page);
 });
 
 /* ==========================================================================
-   PAGE 1: CONTACTS LIST & QUICK-ASSIGN DISAPPEARANCE
+   CONTACTS LIST RENDERING
    ========================================================================== */
 function getFilteredContacts(){
   let list=S.contacts;
@@ -1278,7 +1464,17 @@ function getFilteredContacts(){
 function renderContactCard(c){
   const cat=S.cats.find(k=>k.id===c.categoryId);
   return `
-  <article class="contact-card" data-id="${c.id}" role="button" tabindex="0">
+  <article class="contact-card" draggable="true" tabindex="0" data-id="${c.id}">
+    <span class="c-grip desktop-only" title="Drag to category">
+      <svg width="6" height="12" viewBox="0 0 6 12" fill="currentColor">
+        <circle cx="1.5" cy="2" r="1.2"/>
+        <circle cx="4.5" cy="2" r="1.2"/>
+        <circle cx="1.5" cy="6" r="1.2"/>
+        <circle cx="4.5" cy="6" r="1.2"/>
+        <circle cx="1.5" cy="10" r="1.2"/>
+        <circle cx="4.5" cy="10" r="1.2"/>
+      </svg>
+    </span>
     ${avHtml(c)}
     <div class="c-info">
       <span class="c-name">${esc(c.name)}</span>
@@ -1286,9 +1482,9 @@ function renderContactCard(c){
       ${cat?`<span class="c-cat-mono-pill"><span class="mono-dot"></span><span>${esc(cat.name)}</span></span>`:''}
     </div>
     <div class="c-right-actions">
-      <span class="btn-assign-hint">${cat?'Change':'Assign'}</span>
+      <span class="btn-assign-hint mobile-only">${cat?'Change':'Assign'}</span>
       <button class="star-btn ${c.favorite?'active':''}" data-act="toggle-fav" data-id="${c.id}" aria-label="Favorite">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="${c.favorite?'#FFFFFF':'none'}" stroke="currentColor" stroke-width="2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="${c.favorite?'#FFFFFF':'none'}" stroke="currentColor" stroke-width="2">
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
         </svg>
       </button>
@@ -1311,7 +1507,7 @@ function renderContactsList(){
 
   const listEl=$('#contact-list');
   if(S.loading){
-    listEl.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-muted)">Loading contacts…</div>';
+    listEl.innerHTML='<div style="padding:32px;text-align:center;color:var(--text-muted)">Loading contacts…</div>';
     return;
   }
   if(S.err){
@@ -1328,16 +1524,15 @@ function renderContactsList(){
   const items=getFilteredContacts();
   if(!items.length){
     const msgs={
-      unsorted:['All Organized','Every contact has been placed into a category.'],
-      fav:['No Favorites','Tap the star icon on any contact to bookmark them here.'],
-      all:['No Contacts Found','Try adjusting your search query or company filter.']
+      unsorted:['All Organized','Every contact has a place in your circle.'],
+      fav:['No Favorites','Tap the star icon on any card to pin them here.'],
+      all:['No Contacts Found','Try adjusting your search or company filter.']
     };
     const m=msgs[S.tab]||msgs.all;
     listEl.innerHTML=`<div class="c-empty">
       <div class="c-empty-icon">${S.tab==='unsorted'?'✓':'★'}</div>
       <h4>${m[0]}</h4>
       <p>${m[1]}</p>
-      ${S.tab==='unsorted'?'<button class="btn-ghost" style="margin-top:12px" onclick="switchPage(\'chart\')">View Pie Chart →</button>':''}
     </div>`;
     return;
   }
@@ -1346,7 +1541,66 @@ function renderContactsList(){
 }
 
 /* ==========================================================================
-   QUICK ASSIGN SHEET (TAP CONTACT -> CHOOSE CATEGORY -> DISAPPEARS)
+   ASSIGN / MOVE CONTACT LOGIC (UNIFIED FOR WEB DRAG & MOBILE TAP)
+   ========================================================================== */
+async function moveContact(contactId, targetCatId, dropPos = null){
+  const c=S.contacts.find(x=>x.id===contactId);
+  if(!c || c.categoryId===targetCatId) return;
+
+  const prevCatId=c.categoryId;
+  c.categoryId=targetCatId;
+
+  // Sound pop & particles
+  playAudioPing();
+  navigator.vibrate?.(25);
+  if(dropPos){
+    const targetCat=S.cats.find(k=>k.id===targetCatId);
+    spawnParticles(dropPos.x, dropPos.y, targetCat?targetCat.color:'#FFFFFF');
+  }
+
+  // Smooth slide-out exit when in "To Place" tab
+  if(S.tab==='unsorted' && targetCatId!==null){
+    const cardEl=$(`#contact-list [data-id="${contactId}"]`);
+    if(cardEl){
+      cardEl.classList.add('slide-out-disappear');
+      setTimeout(()=>{
+        cardEl.remove();
+        updateBadges();
+        const remaining=$$('#contact-list .contact-card');
+        if(!remaining.length){
+          renderContactsList();
+        }
+      }, 280);
+    }
+  } else {
+    renderContactsList();
+  }
+
+  updateBadges();
+  renderPieChart();
+  renderCategoriesPage();
+
+  if(S.activeCatId) openCategoryDrawer(S.activeCatId);
+
+  const catName=targetCatId?(S.cats.find(k=>k.id===targetCatId)?.name||'category'):'Unsorted';
+  toast(`Moved to ${catName}`, true);
+
+  // Background API save
+  try{
+    await api(`/contacts/${contactId}/category`,{
+      method:'PUT',
+      body:{categoryId:targetCatId}
+    });
+  }catch(err){
+    c.categoryId=prevCatId;
+    renderContactsList();
+    renderPieChart();
+    toast("Couldn't save change. Restored.");
+  }
+}
+
+/* ==========================================================================
+   QUICK ASSIGN SHEET (MOBILE TAP -> SELECT -> DISAPPEAR)
    ========================================================================== */
 function openAssignSheet(contactId){
   const c=S.contacts.find(x=>x.id===contactId);
@@ -1354,7 +1608,7 @@ function openAssignSheet(contactId){
   S.assigningContactId=c.id;
 
   $('#sheet-contact-name').textContent=`Place "${c.name}"`;
-  $('#sheet-contact-sub').textContent=c.categoryId ? 'Currently categorized. Tap to switch:' : 'Choose a category to organize this contact:';
+  $('#sheet-contact-sub').textContent=c.categoryId ? 'Currently categorized. Tap to change:' : 'Choose a category to organize this contact:';
 
   const listEl=$('#sheet-cat-list');
   if(!S.cats.length){
@@ -1394,61 +1648,12 @@ function closeAssignSheet(){
 $('#btn-close-sheet').onclick=closeAssignSheet;
 $('#sheet-backdrop').onclick=closeAssignSheet;
 
-async function assignContact(contactId, catId){
-  const c=S.contacts.find(x=>x.id===contactId);
-  if(!c) return;
-
-  const prevCatId=c.categoryId;
-  c.categoryId=catId;
-
-  // Sound pop & haptics
-  playAudioPing();
-  navigator.vibrate?.(25);
-
-  // Close sheet immediately for instant responsive feel
-  closeAssignSheet();
-
-  // If in "To Place" (unsorted) tab and category assigned, smoothly disappear
-  if(S.tab==='unsorted' && catId){
-    const cardEl=$(`#contact-list [data-id="${contactId}"]`);
-    if(cardEl){
-      cardEl.classList.add('slide-out-disappear');
-      setTimeout(()=>{
-        cardEl.remove();
-        updateBadges();
-        const remaining = $$('#contact-list .contact-card');
-        if(!remaining.length){
-          renderContactsList();
-        }
-      }, 280);
-    }
-  } else {
-    renderContactsList();
-  }
-
-  updateBadges();
-  renderPieChart();
-  renderCategoriesPage();
-
-  const targetCat=S.cats.find(k=>k.id===catId);
-  toast(`Moved to ${targetCat?targetCat.name:'Unsorted'}`, true);
-
-  // Background API update
-  try{
-    await api(`/contacts/${contactId}/category`,{
-      method:'PUT',
-      body:{categoryId:catId}
-    });
-  }catch(err){
-    c.categoryId=prevCatId;
-    renderContactsList();
-    toast("Couldn't save change. Restored.");
-  }
-}
-
-// Sheet Buttons
 $('#btn-sheet-uncat').onclick=()=>{
-  if(S.assigningContactId) assignContact(S.assigningContactId, null);
+  if(S.assigningContactId){
+    const cid=S.assigningContactId;
+    closeAssignSheet();
+    moveContact(cid, null);
+  }
 };
 $('#btn-sheet-info').onclick=()=>{
   const cid=S.assigningContactId;
@@ -1461,9 +1666,67 @@ $('#btn-sheet-new-cat').onclick=()=>{
 };
 
 /* ==========================================================================
-   PAGE 2: SEPARATE PIE CHART PAGE (RADIAL SPECTRUM)
+   DESKTOP HTML5 DRAG & DROP (ACTIVE ON WEB)
    ========================================================================== */
-function hexToLighter(hex, amt=28){
+document.addEventListener('dragstart', e => {
+  const card = e.target.closest?.('.contact-card[data-id]');
+  if (!card) return;
+  S.dragContactId = card.dataset.id;
+  e.dataTransfer.setData('text/plain', S.dragContactId);
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => card.classList.add('is-dragging'));
+});
+
+document.addEventListener('dragend', () => {
+  S.dragContactId = null;
+  $$('.contact-card.is-dragging').forEach(c => c.classList.remove('is-dragging'));
+  $$('.pie-slice.is-over').forEach(s => s.classList.remove('is-over'));
+  $('#pie-center-hub').classList.remove('is-over');
+  $('#center-drop-hint').style.opacity = '0';
+  $('#center-content').style.opacity = '1';
+});
+
+document.addEventListener('dragover', e => {
+  const slice = e.target.closest?.('.pie-slice');
+  const hub = e.target.closest?.('.center-hub');
+  if (slice || hub) {
+    e.preventDefault();
+  }
+  $$('.pie-slice.is-over').forEach(s => s !== slice && s.classList.remove('is-over'));
+  if (slice) slice.classList.add('is-over');
+
+  if (hub) {
+    hub.classList.add('is-over');
+    $('#center-drop-hint').style.opacity = '1';
+    $('#center-content').style.opacity = '0';
+  } else {
+    $('#pie-center-hub').classList.remove('is-over');
+    $('#center-drop-hint').style.opacity = '0';
+    $('#center-content').style.opacity = '1';
+  }
+});
+
+document.addEventListener('drop', e => {
+  const slice = e.target.closest?.('.pie-slice');
+  const hub = e.target.closest?.('.center-hub');
+  if (!slice && !hub) return;
+  e.preventDefault();
+
+  const id = S.dragContactId || e.dataTransfer.getData('text/plain');
+  if (!id) return;
+
+  if (slice) {
+    const catId = slice.dataset.catId;
+    moveContact(id, catId, { x: e.clientX, y: e.clientY });
+  } else if (hub) {
+    moveContact(id, null, { x: e.clientX, y: e.clientY });
+  }
+});
+
+/* ==========================================================================
+   PIE CHART MATH & RENDERING
+   ========================================================================== */
+function hexToLighter(hex, amt=26){
   try{
     let num=parseInt(hex.replace('#',''),16);
     let R=Math.min(255,(num>>16)+amt);
@@ -1564,12 +1827,15 @@ function renderPieChart() {
     ring.style.strokeDashoffset = offset;
   }
 
+  const catBadge = $('#categories-count-badge');
+  if (catBadge) catBadge.textContent = `${S.cats.length} Categories`;
+
   if (!S.cats.length) {
     defsEl.innerHTML = '';
     slicesGroup.innerHTML = `
       <circle r="180" fill="none" stroke="#222222" stroke-width="1.5" stroke-dasharray="6 6"/>
       <text y="-8" text-anchor="middle" fill="#888888" font-size="13" font-weight="600">No categories created</text>
-      <text y="14" text-anchor="middle" fill="#555555" font-size="11">Tap '+ Category' to begin</text>
+      <text y="14" text-anchor="middle" fill="#555555" font-size="11">Click '+ New Category' to begin</text>
     `;
     dockEl.innerHTML = '';
     return;
@@ -1613,7 +1879,7 @@ function renderPieChart() {
 
   slicesGroup.innerHTML = slicesHtml;
 
-  // Dock Pills
+  // Render Dock Pills
   dockEl.innerHTML = S.cats.map(k => {
     const cnt = S.contacts.filter(c => c.categoryId === k.id).length;
     return `
@@ -1633,13 +1899,12 @@ function renderPieChart() {
   if (dockAddBtn) dockAddBtn.onclick = () => categoryModal();
 }
 
-$('#btn-chart-add-cat').onclick=()=>categoryModal();
-
 /* ==========================================================================
-   PAGE 3: CATEGORIES MANAGER PAGE
+   MOBILE CATEGORIES PAGE RENDERING
    ========================================================================== */
 function renderCategoriesPage(){
   const listEl=$('#cat-manager-list');
+  if(!listEl) return;
   if(!S.cats.length){
     listEl.innerHTML=`
       <div class="c-empty">
@@ -1670,9 +1935,10 @@ function renderCategoriesPage(){
 }
 
 $('#btn-cat-add').onclick=()=>categoryModal();
+$('#btn-add-cat').onclick=()=>categoryModal();
 
 /* ==========================================================================
-   CATEGORY MEMBERS DRAWER & CONTACT DETAILS DRAWER
+   CATEGORY & CONTACT DRAWERS
    ========================================================================== */
 function openCategoryDrawer(catId){
   const cat = S.cats.find(k => k.id === catId);
@@ -1683,13 +1949,14 @@ function openCategoryDrawer(catId){
   $('#cdrawer-dot').style.background = cat.color;
 
   const contactsInCat = S.contacts.filter(c => c.categoryId === cat.id);
-  const listEl = $('#cdrawer-list');
+  $('#cdrawer-count').textContent = `${contactsInCat.length} contacts assigned`;
 
+  const listEl = $('#cdrawer-list');
   if (!contactsInCat.length) {
     listEl.innerHTML = `
       <div class="c-empty" style="padding:40px 14px">
-        <h4>No contacts assigned</h4>
-        <p>Go to the Contacts tab and tap on people to place them here.</p>
+        <h4>No people in this slice</h4>
+        <p>Drag contacts from the left queue directly onto this slice to assign them.</p>
       </div>
     `;
   } else {
@@ -1716,29 +1983,6 @@ function closeCategoryDrawer(){
   d.inert = true;
   S.activeCatId = null;
 }
-
-$('#btn-close-cdrawer').onclick = closeCategoryDrawer;
-$('#btn-rename-cat').onclick = () => {
-  const cat = S.cats.find(k => k.id === S.activeCatId);
-  if (cat) categoryModal(cat);
-};
-$('#btn-delete-cat').onclick = async () => {
-  const cat = S.cats.find(k => k.id === S.activeCatId);
-  if (!cat) return;
-  if (!confirm(`Delete "${cat.name}"? Contacts in it will move back to To Place.`)) return;
-  try {
-    await api(`/categories/${cat.id}`, { method: 'DELETE' });
-    S.cats = S.cats.filter(k => k.id !== cat.id);
-    S.contacts.forEach(c => { if (c.categoryId === cat.id) c.categoryId = null; });
-    closeCategoryDrawer();
-    renderContactsList();
-    renderPieChart();
-    renderCategoriesPage();
-    toast('Category deleted', true);
-  } catch (err) {
-    toast(err.message);
-  }
-};
 
 function openContactDrawer(cId){
   const c = S.contacts.find(x => x.id === cId);
@@ -1795,9 +2039,32 @@ function openContactDrawer(cId){
 
   $('#btn-close-p').onclick = () => { p.classList.remove('open'); p.inert = true; S.selContactId = null; };
   $('#p-cat-select').onchange = e => {
-    assignContact(c.id, e.target.value || null);
+    moveContact(c.id, e.target.value || null);
   };
 }
+
+$('#btn-close-cdrawer').onclick = closeCategoryDrawer;
+$('#btn-rename-cat').onclick = () => {
+  const cat = S.cats.find(k => k.id === S.activeCatId);
+  if (cat) categoryModal(cat);
+};
+$('#btn-delete-cat').onclick = async () => {
+  const cat = S.cats.find(k => k.id === S.activeCatId);
+  if (!cat) return;
+  if (!confirm(`Delete "${cat.name}"? Contacts in it will move back to To Place.`)) return;
+  try {
+    await api(`/categories/${cat.id}`, { method: 'DELETE' });
+    S.cats = S.cats.filter(k => k.id !== cat.id);
+    S.contacts.forEach(c => { if (c.categoryId === cat.id) c.categoryId = null; });
+    closeCategoryDrawer();
+    renderPieChart();
+    renderContactsList();
+    renderCategoriesPage();
+    toast('Category deleted', true);
+  } catch (err) {
+    toast(err.message);
+  }
+};
 
 /* ==========================================================================
    CATEGORY MODAL (ADD / EDIT)
@@ -1929,22 +2196,32 @@ document.addEventListener('click', e => {
     return;
   }
 
-  // Tap a category row inside Quick Assign Sheet
+  // Tap a category row inside Quick Assign Sheet (Mobile)
   const assignCatRow = e.target.closest('.assign-cat-row[data-cat-id]');
   if (assignCatRow) {
     const catId = assignCatRow.dataset.catId;
-    if (S.assigningContactId) assignContact(S.assigningContactId, catId);
+    if (S.assigningContactId) {
+      const cid = S.assigningContactId;
+      closeAssignSheet();
+      moveContact(cid, catId);
+    }
     return;
   }
 
-  // Tap Contact Card in main list -> Open Quick Assign Sheet
+  // Tap Contact Card
   const card = e.target.closest('.contact-card[data-id]');
   if (card) {
-    openAssignSheet(card.dataset.id);
+    // If on mobile (<= 860px), open Quick Assign sheet!
+    if (window.innerWidth <= 860) {
+      openAssignSheet(card.dataset.id);
+    } else {
+      // On desktop, click opens contact detail drawer
+      openContactDrawer(card.dataset.id);
+    }
     return;
   }
 
-  // Tap Slice or Legend Pill on Pie Chart page -> Open Category Drawer
+  // Tap Slice or Legend Pill on Pie Chart -> Open Category Drawer
   const slice = e.target.closest('.pie-slice, .dock-pill[data-cat-id]');
   if (slice) {
     openCategoryDrawer(slice.dataset.catId);
@@ -1962,8 +2239,7 @@ document.addEventListener('click', e => {
   const remBtn = e.target.closest('[data-act="remove-cat"]');
   if (remBtn) {
     e.stopPropagation();
-    assignContact(remBtn.dataset.cid, null);
-    if (S.activeCatId) openCategoryDrawer(S.activeCatId);
+    moveContact(remBtn.dataset.cid, null);
     return;
   }
 
@@ -1977,7 +2253,7 @@ document.addEventListener('click', e => {
 
 $('#btn-sync').onclick = syncContacts;
 
-// Tab Switching on Contacts Page
+// Tab Switching
 $$('.seg-tab').forEach(tab => {
   tab.onclick = () => {
     $$('.seg-tab').forEach(t => t.classList.remove('active'));
@@ -2008,13 +2284,24 @@ $('#q-clear').onclick = () => {
 $('#co-filter').onchange = e => { S.co = e.target.value; renderContactsList(); };
 $('#sort-filter').onchange = e => { S.sort = e.target.value; renderContactsList(); };
 
+// Window resize listener to keep views in sync
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 860) {
+    $('#contacts-bar').classList.remove('active');
+    $('#wheel-stage').classList.remove('active');
+    $('#page-categories').classList.remove('active');
+  } else {
+    switchMobilePage(S.page);
+  }
+});
+
 // Settings Modal
 $('#btn-settings').onclick = () => {
   modal(`
     <h3>Settings</h3>
     <div style="display:grid;gap:14px">
       <div style="display:grid;gap:4px">
-        <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">ACCOUNT</label>
+        <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">SIGNED IN AS</label>
         <div style="font-size:13.5px;color:#FFFFFF"><b>${esc(S.me.name)}</b> (${esc(S.me.email)})</div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;border-top:1px solid var(--border-hairline);padding-top:16px">
@@ -2041,6 +2328,14 @@ $('#btn-settings').onclick = () => {
     return location.replace('/');
   }
 
+  // Update user info
+  $('#user-name').textContent = S.me.name || 'User';
+  $('#user-email').textContent = S.me.email || '';
+  if (S.me.avatar_url) {
+    $('#user-avatar').innerHTML = `<img src="${esc(S.me.avatar_url)}" style="width:100%;height:100%;border-radius:50%">`;
+  } else {
+    $('#user-avatar').textContent = ini(S.me.name);
+  }
   if (S.me.demo) {
     $('#app-badge').textContent = 'Demo';
   }
@@ -2049,9 +2344,7 @@ $('#btn-settings').onclick = () => {
 
   const initialHash = (location.hash || '').replace('#','');
   if (['contacts', 'chart', 'categories'].includes(initialHash)) {
-    switchPage(initialHash);
-  } else if (initialHash === 'assign-test' && S.contacts.length) {
-    setTimeout(() => openAssignSheet(S.contacts[0].id), 250);
+    switchMobilePage(initialHash);
   }
 
   if (!S.err && !S.contacts.length) {
