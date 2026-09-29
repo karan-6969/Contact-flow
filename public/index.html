@@ -912,31 +912,59 @@ nav.landing-nav{
 
 /* Dialog */
 dialog{
-  border:1px solid var(--border-hairline);
-  border-radius:20px;
-  background:#0E0E0E;
+  border:1px solid var(--border-subtle);
+  border-radius:24px;
+  background:#111111;
   color:#FFFFFF;
-  padding:28px;
+  padding:28px 24px;
   width:min(440px,92vw);
   margin:auto;
   box-shadow:0 30px 90px rgba(0,0,0,0.95);
   animation:dlgFade .22s cubic-bezier(0.16,1,0.3,1);
+  position:fixed;
+  z-index:99999;
 }
-dialog::backdrop{background:rgba(0,0,0,0.8);backdrop-filter:blur(8px)}
+dialog::backdrop{
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  z-index:99998;
+}
 @keyframes dlgFade{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
-dialog h3{font-size:1.55rem;font-weight:800;letter-spacing:-0.035em;margin-bottom:14px;color:#FFFFFF}
+dialog h3{font-size:1.45rem;font-weight:800;letter-spacing:-0.035em;margin-bottom:14px;color:#FFFFFF}
 dialog form,dialog>div{display:grid;gap:14px}
-dialog input[type=text],dialog input[type=search]{
-  width:100%;
-  background:#141414;
-  border:1px solid var(--border-hairline);
-  border-radius:12px;
-  padding:12px 14px;
-  font-size:14px;
-  transition:border-color .15s;
-  color:#FFFFFF;
+dialog input, dialog input[type=text], dialog input[type=search]{
+  width:100% !important;
+  background:#1A1A1A !important;
+  border:1px solid rgba(255,255,255,0.18) !important;
+  border-radius:12px !important;
+  padding:14px 16px !important;
+  font-size:16px !important; /* Critical 16px prevents iOS Safari auto-zoom */
+  line-height:1.3 !important;
+  color:#FFFFFF !important;
+  -webkit-appearance:none;
+  appearance:none;
+  outline:0;
+  transition:border-color .18s, box-shadow .18s;
+  box-sizing:border-box !important;
 }
-dialog input:focus{border-color:#FFFFFF;outline:0}
+dialog input:focus{
+  border-color:#FFFFFF !important;
+  box-shadow:0 0 0 2px rgba(255,255,255,0.2) !important;
+}
+
+.drawer-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  z-index:79;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .24s ease;
+}
+.drawer-backdrop.open{opacity:1;pointer-events:auto}
 
 /* Swatches for choosing Category Color on Wheel */
 .color-picker-grid{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
@@ -1033,6 +1061,54 @@ dialog input:focus{border-color:#FFFFFF;outline:0}
 
 /* --- MOBILE ONLY (NATIVE CONTACTS LIST + SEPARATE PIE CHART TAB) --- */
 @media (max-width: 860px) {
+  /* Landing Page Mobile */
+  nav.landing-nav{
+    padding:14px 18px;
+  }
+  .landing-nav .btn-ghost{
+    display:none; /* Keep single primary action on mobile top bar */
+  }
+  .landing-nav .btn-white{
+    padding:8px 16px;
+    font-size:13px;
+  }
+  .hero{
+    padding:38px 20px 48px;
+    text-align:center;
+  }
+  .hero-tag{
+    font-size:11px;
+    padding:4px 14px;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.3rem, 9.5vw, 3.2rem);
+    line-height:1.06;
+    letter-spacing:-0.04em;
+  }
+  .hero .lead{
+    font-size:15px;
+    line-height:1.55;
+    margin:18px auto 28px;
+    color:#999999;
+  }
+  .hero-btns{
+    flex-direction:column;
+    width:100%;
+    max-width:320px;
+    margin:0 auto;
+    gap:12px;
+  }
+  .hero-btns .btn-white,
+  .hero-btns .btn-ghost{
+    width:100%;
+    justify-content:center;
+    min-height:48px;
+    font-size:14.5px;
+    border-radius:12px;
+  }
+
+  /* App Workspace Mobile */
   #app{
     display:flex;
     flex-direction:column;
@@ -1065,13 +1141,56 @@ dialog input:focus{border-color:#FFFFFF;outline:0}
   }
   #wheel-stage{
     height:calc(100vh - 68px);
-    padding:20px 20px 84px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+    padding:16px 16px 88px;
     align-items:center;
-    justify-content:center;
+    justify-content:flex-start;
+  }
+  .stage-top-bar{
+    margin-bottom:8px;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+  .stage-title-wrap h2{
+    font-size:1.45rem;
+  }
+  .stage-sub{
+    font-size:12px;
+    color:var(--text-muted);
+  }
+  .pie-container{
+    flex:none;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-top:4px;
   }
   .pie-svg{
-    width:min(420px,54vh);
-    height:min(420px,54vh);
+    width:min(340px, 80vw);
+    height:min(340px, 80vw);
+  }
+  .category-dock{
+    width:100%;
+    max-width:440px;
+    margin-top:16px;
+    padding:10px;
+    border-radius:16px;
+    background:#0E0E0E;
+    border:1px solid var(--border-subtle);
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+  }
+  .dock-pill{
+    font-size:12px;
+    padding:6px 12px;
   }
   #page-categories{
     padding:20px 20px 84px;
@@ -1081,6 +1200,12 @@ dialog input:focus{border-color:#FFFFFF;outline:0}
   }
   #toast{
     bottom:80px;
+  }
+  dialog{
+    width:92vw;
+    max-width:400px;
+    padding:24px 20px;
+    border-radius:22px;
   }
 }
 </style>
@@ -1281,6 +1406,9 @@ dialog input:focus{border-color:#FFFFFF;outline:0}
     </div>
   </aside>
 
+  <!-- Drawer Backdrop (Mobile & Desktop) -->
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
   <!-- Right Drawer: Category Contacts View -->
   <aside id="cat-drawer" class="drawer" inert>
     <div class="drawer-header">
@@ -1414,8 +1542,35 @@ function toast(msg,ok=false){
 }
 
 const dlg=$('#dlg');
-const modal=h=>{dlg.innerHTML=h;dlg.showModal()};
-dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+function openModal(h){
+  closeAssignSheet();
+  closeCategoryDrawer();
+  closeContactDrawer();
+  dlg.innerHTML=h;
+  try{
+    if(!dlg.open) dlg.showModal();
+  }catch(e){
+    dlg.setAttribute('open','');
+  }
+}
+function closeModal(){
+  try{
+    if(dlg && dlg.open) dlg.close();
+  }catch(e){
+    dlg.removeAttribute('open');
+  }
+}
+window.modal=openModal;
+window.closeModal=closeModal;
+
+dlg.addEventListener('click', e => {
+  const rect = dlg.getBoundingClientRect();
+  const inside = (
+    rect.top <= e.clientY && e.clientY <= rect.bottom &&
+    rect.left <= e.clientX && e.clientX <= rect.right
+  );
+  if (!inside) closeModal();
+});
 
 const ini=n=>(n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
 const avHtml=(c,cl='')=>c.photo_url?`<img class="c-avatar ${cl}" src="${esc(c.photo_url)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<span class="c-avatar ${cl}">${esc(ini(c.name))}</span>`;
@@ -1613,11 +1768,19 @@ function openAssignSheet(contactId){
   const listEl=$('#sheet-cat-list');
   if(!S.cats.length){
     listEl.innerHTML=`
-      <div style="padding:24px;text-align:center;color:var(--text-muted)">
-        <p>No categories created yet.</p>
-        <button class="btn-white" style="margin-top:12px" onclick="categoryModal()">+ Create First Category</button>
+      <div style="padding:28px 20px;text-align:center;color:var(--text-muted)">
+        <p style="font-size:14px;color:#AAAAAA;margin-bottom:14px">No categories created yet.</p>
+        <button type="button" class="btn-white" id="btn-create-first-cat" style="padding:10px 20px;font-size:13.5px">+ Create First Category</button>
       </div>
     `;
+    const btnFirst = $('#btn-create-first-cat');
+    if(btnFirst){
+      btnFirst.onclick = (e) => {
+        e.preventDefault();
+        closeAssignSheet();
+        categoryModal();
+      };
+    }
   } else {
     listEl.innerHTML=S.cats.map(k=>{
       const isCur = k.id===c.categoryId;
@@ -1833,11 +1996,16 @@ function renderPieChart() {
   if (!S.cats.length) {
     defsEl.innerHTML = '';
     slicesGroup.innerHTML = `
-      <circle r="180" fill="none" stroke="#222222" stroke-width="1.5" stroke-dasharray="6 6"/>
-      <text y="-8" text-anchor="middle" fill="#888888" font-size="13" font-weight="600">No categories created</text>
-      <text y="14" text-anchor="middle" fill="#555555" font-size="11">Click '+ New Category' to begin</text>
+      <circle r="190" fill="none" stroke="#262626" stroke-width="1.5" stroke-dasharray="6 6"/>
     `;
-    dockEl.innerHTML = '';
+    dockEl.innerHTML = `
+      <div style="text-align:center;padding:12px 18px;display:flex;flex-direction:column;align-items:center;gap:10px">
+        <p style="font-size:13px;color:var(--text-muted);margin:0">No categories created yet</p>
+        <button type="button" class="btn-white" id="dock-empty-create" style="padding:10px 22px;font-size:13.5px">+ Create First Category</button>
+      </div>
+    `;
+    const emptyBtn = $('#dock-empty-create');
+    if (emptyBtn) emptyBtn.onclick = () => categoryModal();
     return;
   }
 
@@ -1911,9 +2079,11 @@ function renderCategoriesPage(){
         <div class="c-empty-icon">+</div>
         <h4>No Categories</h4>
         <p>Create categories to group your relationships.</p>
-        <button class="btn-white" style="margin-top:12px" onclick="categoryModal()">Create Category</button>
+        <button type="button" class="btn-white" id="btn-empty-manager-cat" style="margin-top:12px">+ Create Category</button>
       </div>
     `;
+    const btn = $('#btn-empty-manager-cat');
+    if (btn) btn.onclick = () => categoryModal();
     return;
   }
 
@@ -1932,6 +2102,13 @@ function renderCategoriesPage(){
       </div>
     `;
   }).join('');
+
+  $$('#cat-manager-list .cat-item-row').forEach(row => {
+    row.onclick = () => {
+      const catId = row.dataset.catId;
+      if (catId) openCategoryDrawer(catId);
+    };
+  });
 }
 
 $('#btn-cat-add').onclick=()=>categoryModal();
@@ -1956,7 +2133,7 @@ function openCategoryDrawer(catId){
     listEl.innerHTML = `
       <div class="c-empty" style="padding:40px 14px">
         <h4>No people in this slice</h4>
-        <p>Drag contacts from the left queue directly onto this slice to assign them.</p>
+        <p>Tap contacts in the queue to assign them to this slice.</p>
       </div>
     `;
   } else {
@@ -1967,7 +2144,7 @@ function openCategoryDrawer(catId){
           <div class="drawer-item-name">${esc(c.name)}</div>
           <div class="drawer-item-sub">${esc(c.job_title || c.organization || c.emails?.[0]?.value || '')}</div>
         </div>
-        <button class="btn-remove-cat" data-act="remove-cat" data-cid="${c.id}" title="Remove to Unsorted">✕</button>
+        <button type="button" class="btn-remove-cat" data-act="remove-cat" data-cid="${c.id}" title="Remove to Unsorted">✕</button>
       </div>
     `).join('');
   }
@@ -1975,6 +2152,8 @@ function openCategoryDrawer(catId){
   const d = $('#cat-drawer');
   d.classList.add('open');
   d.inert = false;
+  const bd = $('#drawer-backdrop');
+  if (bd) bd.classList.add('open');
 }
 
 function closeCategoryDrawer(){
@@ -1982,6 +2161,8 @@ function closeCategoryDrawer(){
   d.classList.remove('open');
   d.inert = true;
   S.activeCatId = null;
+  const bd = $('#drawer-backdrop');
+  if (bd && !$('#panel').classList.contains('open')) bd.classList.remove('open');
 }
 
 function openContactDrawer(cId){
@@ -1994,8 +2175,8 @@ function openContactDrawer(cId){
 
   p.innerHTML = `
     <div class="drawer-header">
-      <button class="btn-ghost" data-act="fav" data-id="${c.id}" style="padding:4px 12px;font-size:12px">${c.favorite?'★ Starred':'☆ Star'}</button>
-      <button class="icon-btn" id="btn-close-p">✕</button>
+      <button type="button" class="btn-ghost" data-act="fav" data-id="${c.id}" style="padding:4px 12px;font-size:12px">${c.favorite?'★ Starred':'☆ Star'}</button>
+      <button type="button" class="icon-btn" id="btn-close-p">✕</button>
     </div>
     <div class="drawer-body">
       <div style="text-align:center;padding:16px 0">
@@ -2017,7 +2198,7 @@ function openContactDrawer(cId){
           <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">EMAIL</label>
           <div style="display:flex;align-items:center;justify-content:space-between;background:#141414;padding:9px 12px;border-radius:10px;border:1px solid var(--border-hairline)">
             <span style="font-size:13px;color:#FFFFFF">${esc(e.value)}</span>
-            <button class="btn-ghost" data-act="copy" data-val="${esc(e.value)}" style="padding:3px 8px;font-size:11px">Copy</button>
+            <button type="button" class="btn-ghost" data-act="copy" data-val="${esc(e.value)}" style="padding:3px 8px;font-size:11px">Copy</button>
           </div>
         </div>
       `).join('')}
@@ -2027,7 +2208,7 @@ function openContactDrawer(cId){
           <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">PHONE</label>
           <div style="display:flex;align-items:center;justify-content:space-between;background:#141414;padding:9px 12px;border-radius:10px;border:1px solid var(--border-hairline)">
             <span style="font-size:13px;color:#FFFFFF">${esc(p.value)}</span>
-            <button class="btn-ghost" data-act="copy" data-val="${esc(p.value)}" style="padding:3px 8px;font-size:11px">Copy</button>
+            <button type="button" class="btn-ghost" data-act="copy" data-val="${esc(p.value)}" style="padding:3px 8px;font-size:11px">Copy</button>
           </div>
         </div>
       `).join('')}
@@ -2036,10 +2217,31 @@ function openContactDrawer(cId){
 
   p.classList.add('open');
   p.inert = false;
+  const bd = $('#drawer-backdrop');
+  if (bd) bd.classList.add('open');
 
-  $('#btn-close-p').onclick = () => { p.classList.remove('open'); p.inert = true; S.selContactId = null; };
+  $('#btn-close-p').onclick = closeContactDrawer;
   $('#p-cat-select').onchange = e => {
     moveContact(c.id, e.target.value || null);
+  };
+}
+
+function closeContactDrawer(){
+  const p = $('#panel');
+  if(p){
+    p.classList.remove('open');
+    p.inert = true;
+  }
+  S.selContactId = null;
+  const bd = $('#drawer-backdrop');
+  if (bd && !$('#cat-drawer').classList.contains('open')) bd.classList.remove('open');
+}
+
+const bdEl = $('#drawer-backdrop');
+if (bdEl) {
+  bdEl.onclick = () => {
+    closeCategoryDrawer();
+    closeContactDrawer();
   };
 }
 
@@ -2070,32 +2272,43 @@ $('#btn-delete-cat').onclick = async () => {
    CATEGORY MODAL (ADD / EDIT)
    ========================================================================== */
 function categoryModal(cat = {}) {
+  closeAssignSheet();
   let selectedColor = cat.color || PIE_PALETTE[S.cats.length % PIE_PALETTE.length];
 
-  modal(`
-    <form id="form-cat">
-      <h3>${cat.id ? 'Edit Category' : 'New Category'}</h3>
-      
-      <div style="display:grid;gap:6px">
-        <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">NAME</label>
-        <input name="name" maxlength="28" required autofocus placeholder="e.g. Core Team, Clients, Investors" value="${esc(cat.name||'')}">
+  openModal(`
+    <div style="position:relative">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h3 style="margin:0">${cat.id ? 'Edit Category' : 'New Category'}</h3>
+        <button type="button" class="icon-btn" onclick="closeModal()" style="width:32px;height:32px" aria-label="Close">✕</button>
       </div>
 
-      <div style="display:grid;gap:6px;margin-top:6px">
-        <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">WHEEL COLOR</label>
-        <div class="color-picker-grid" id="picker-swatches">
-          ${PIE_PALETTE.map(col => `
-            <div class="c-swatch ${col===selectedColor?'active':''}" data-col="${col}" style="background:${col};--swatch-color:${col}"></div>
-          `).join('')}
+      <form id="form-cat" style="display:grid;gap:14px">
+        <div style="display:grid;gap:6px">
+          <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">NAME</label>
+          <input type="text" name="name" id="input-cat-name" maxlength="28" required placeholder="e.g. Core Team, Clients, Investors" value="${esc(cat.name||'')}" autocomplete="off" autocapitalize="words" style="font-size:16px;color:#FFFFFF;background:#1A1A1A;width:100%">
         </div>
-      </div>
 
-      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px">
-        <button type="button" class="btn-ghost" onclick="dlg.close()">Cancel</button>
-        <button class="btn-white">${cat.id ? 'Save' : 'Create'}</button>
-      </div>
-    </form>
+        <div style="display:grid;gap:6px">
+          <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">WHEEL COLOR</label>
+          <div class="color-picker-grid" id="picker-swatches">
+            ${PIE_PALETTE.map(col => `
+              <div class="c-swatch ${col===selectedColor?'active':''}" data-col="${col}" style="background:${col};--swatch-color:${col}"></div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px">
+          <button type="button" class="btn-ghost" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-white">${cat.id ? 'Save' : 'Create'}</button>
+        </div>
+      </form>
+    </div>
   `);
+
+  setTimeout(() => {
+    const inp = $('#input-cat-name');
+    if (inp) inp.focus();
+  }, 100);
 
   $$('#picker-swatches .c-swatch').forEach(s => {
     s.onclick = () => {
@@ -2119,7 +2332,7 @@ function categoryModal(cat = {}) {
         S.cats.push(created);
         toast('Category created', true);
       }
-      dlg.close();
+      closeModal();
       renderPieChart();
       renderContactsList();
       renderCategoriesPage();
@@ -2129,6 +2342,7 @@ function categoryModal(cat = {}) {
     }
   };
 }
+window.categoryModal = categoryModal;
 
 /* ==========================================================================
    APP INITIALIZATION & DATA LOADING
@@ -2297,19 +2511,26 @@ window.addEventListener('resize', () => {
 
 // Settings Modal
 $('#btn-settings').onclick = () => {
-  modal(`
-    <h3>Settings</h3>
-    <div style="display:grid;gap:14px">
-      <div style="display:grid;gap:4px">
-        <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">SIGNED IN AS</label>
-        <div style="font-size:13.5px;color:#FFFFFF"><b>${esc(S.me.name)}</b> (${esc(S.me.email)})</div>
+  openModal(`
+    <div style="position:relative">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h3 style="margin:0">Settings</h3>
+        <button type="button" class="icon-btn" onclick="closeModal()" style="width:32px;height:32px" aria-label="Close">✕</button>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;border-top:1px solid var(--border-hairline);padding-top:16px">
-        <button class="btn-ghost" onclick="api('/auth/logout',{method:'POST'}).then(()=>location.href='/');">Sign Out</button>
-        <button class="btn-white" onclick="dlg.close()">Done</button>
+      <div style="display:grid;gap:14px">
+        <div style="display:grid;gap:4px">
+          <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">SIGNED IN AS</label>
+          <div style="font-size:13.5px;color:#FFFFFF"><b>${esc(S.me.name)}</b> (${esc(S.me.email)})</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;border-top:1px solid var(--border-hairline);padding-top:16px">
+          <button type="button" class="btn-ghost" onclick="api('/auth/logout',{method:'POST'}).then(()=>location.href='/');">Sign Out</button>
+          <button type="button" class="btn-white" id="btn-settings-done" onclick="closeModal()">Done</button>
+        </div>
       </div>
     </div>
   `);
+  const doneBtn = $('#btn-settings-done');
+  if (doneBtn) doneBtn.onclick = () => closeModal();
 };
 
 /* Boot */
