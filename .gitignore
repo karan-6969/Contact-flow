@@ -1,0 +1,21 @@
+# Environment variables (NEVER COMMIT)
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Local database and cache
+data/
+*.sqlite
+*.sqlite-journal
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*

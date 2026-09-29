@@ -1,0 +1,2063 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>ContactFlow — Visual Contact Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+if(location.pathname.indexOf('/app')===0)document.documentElement.classList.add('isapp');
+</script>
+<style>
+/* ==========================================================================
+   MOBILE-FIRST STRICT BLACK & WHITE MONOCHROME THEME
+   The Pie Chart Wheel is the SINGLE focal element that possesses color.
+   ========================================================================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --bg-void:#000000;
+  --bg-surface:#080808;
+  --bg-card:#111111;
+  --bg-card-hover:#171717;
+  --bg-sheet:#121212;
+  --border-hairline:rgba(255,255,255,0.07);
+  --border-subtle:rgba(255,255,255,0.12);
+  --border-medium:rgba(255,255,255,0.22);
+  --border-white:rgba(255,255,255,0.45);
+  --text-pure:#FFFFFF;
+  --text-muted:#8E8E93;
+  --text-dim:#55555A;
+  --font-sans:-apple-system,BlinkMacSystemFont,"Plus Jakarta Sans","SF Pro Display","Inter",sans-serif;
+  --font-mono:"JetBrains Mono","SF Mono",monospace;
+}
+
+html,body{
+  height:100%;
+  background:var(--bg-void);
+  color:var(--text-pure);
+  font-family:var(--font-sans);
+  overflow:hidden;
+  line-height:1.45;
+  letter-spacing:-0.015em;
+  -webkit-font-smoothing:antialiased;
+}
+
+button,input,select{font-family:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:1px solid #FFFFFF;outline-offset:2px}
+
+/* Luxury Monochrome Buttons */
+.btn-white{
+  background:#FFFFFF;
+  color:#000000;
+  border-radius:999px;
+  padding:10px 22px;
+  font-size:13.5px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:all .18s cubic-bezier(0.16,1,0.3,1);
+  text-decoration:none;
+  border:1px solid #FFFFFF;
+}
+.btn-white:hover{background:#E5E5EA;transform:scale(1.02)}
+.btn-white:active{transform:scale(0.97)}
+
+.btn-ghost{
+  background:transparent;
+  border:1px solid var(--border-subtle);
+  color:#FFFFFF;
+  border-radius:999px;
+  padding:9px 18px;
+  font-size:13px;
+  font-weight:600;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  transition:all .18s ease;
+  text-decoration:none;
+}
+.btn-ghost:hover{border-color:var(--border-medium);background:rgba(255,255,255,0.06)}
+.btn-ghost:active{transform:scale(0.97)}
+
+.icon-btn{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#141414;
+  border:1px solid var(--border-hairline);
+  color:var(--text-muted);
+  transition:all .15s ease;
+  flex:none;
+}
+.icon-btn:hover{color:#FFFFFF;border-color:var(--border-subtle);background:#1E1E1E}
+.icon-btn:active{transform:scale(0.94)}
+
+/* ==========================================================================
+   LANDING VIEW
+   ========================================================================== */
+.isapp #land,#app{display:none}
+.isapp #app{display:flex}
+
+#land{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:radial-gradient(circle 800px at 50% -10%, rgba(255,255,255,0.07), transparent 70%), #000000;
+}
+nav.landing-nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:22px 6vw;
+  border-bottom:1px solid var(--border-hairline);
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(24px);
+}
+.nav-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  font-size:18px;
+  letter-spacing:-0.035em;
+  color:#FFFFFF;
+  text-decoration:none;
+}
+.nav-dot{width:9px;height:9px;border-radius:50%;background:#FFFFFF}
+
+.hero{
+  padding:20vh 6vw 12vh;
+  text-align:center;
+  max-width:880px;
+  margin:0 auto;
+}
+.hero-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:5px 16px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border-subtle);
+  font-size:12px;
+  font-weight:600;
+  color:var(--text-muted);
+  margin-bottom:28px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+}
+.hero h1{
+  font-size:clamp(3.2rem,8.5vw,5.5rem);
+  font-weight:800;
+  letter-spacing:-0.045em;
+  line-height:1.02;
+  color:#FFFFFF;
+}
+.hero .lead{
+  font-size:clamp(1.1rem,1.8vw,1.35rem);
+  color:var(--text-muted);
+  margin:28px auto 40px;
+  max-width:32em;
+  font-weight:400;
+  line-height:1.6;
+}
+.hero-btns{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+/* ==========================================================================
+   APP WORKSPACE: MOBILE-FIRST STUDIO
+   ========================================================================== */
+#app{
+  width:100%;
+  max-width:540px;
+  height:100vh;
+  margin:0 auto;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg-void);
+  border-left:1px solid var(--border-hairline);
+  border-right:1px solid var(--border-hairline);
+  box-shadow:0 0 80px rgba(0,0,0,0.8);
+}
+
+/* --- Top Sticky App Bar --- */
+.app-header{
+  padding:16px 20px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border-hairline);
+  position:relative;
+  z-index:20;
+}
+.header-top-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.header-brand{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-weight:800;
+  font-size:17px;
+  letter-spacing:-0.035em;
+  color:#FFFFFF;
+}
+.header-brand-dot{width:8px;height:8px;border-radius:50%;background:#FFFFFF}
+.header-badge{
+  font-size:11px;
+  font-family:var(--font-mono);
+  font-weight:700;
+  padding:2px 8px;
+  border-radius:999px;
+  background:#141414;
+  border:1px solid var(--border-hairline);
+  color:var(--text-muted);
+}
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* Spotlight-style Search Input */
+.search-bar{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  background:#121212;
+  border:1px solid var(--border-hairline);
+  border-radius:12px;
+  padding:9px 14px;
+  transition:border-color .18s, background .18s;
+}
+.search-bar:focus-within{border-color:var(--border-white);background:#161616}
+.search-bar input{border:0;background:none;flex:1;outline:0;font-size:13.5px;color:#FFFFFF}
+.search-bar input::placeholder{color:var(--text-dim)}
+.search-bar svg{color:var(--text-dim);flex:none}
+
+/* Segmented Filter Control */
+.segmented-control{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  background:#121212;
+  border:1px solid var(--border-hairline);
+  border-radius:12px;
+  padding:3px;
+  gap:2px;
+}
+.seg-tab{
+  padding:7px 4px;
+  font-size:12px;
+  font-weight:600;
+  border-radius:9px;
+  color:var(--text-muted);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:all .18s ease;
+  white-space:nowrap;
+}
+.seg-tab:hover{color:#FFFFFF}
+.seg-tab.active{
+  background:#FFFFFF;
+  color:#000000;
+  font-weight:700;
+  box-shadow:0 2px 10px rgba(0,0,0,0.5);
+}
+.seg-badge{
+  font-size:10.5px;
+  font-family:var(--font-mono);
+  font-weight:700;
+  padding:1px 6px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.08);
+  color:var(--text-muted);
+}
+.seg-tab.active .seg-badge{background:#000000;color:#FFFFFF}
+
+/* Secondary Filter / Sort Bar */
+.filter-sub-bar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.custom-select{
+  flex:1;
+  min-width:0;
+  appearance:none;
+  -webkit-appearance:none;
+  background-color:#121212;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+  padding:7px 28px 7px 12px;
+  border:1px solid var(--border-hairline);
+  border-radius:10px;
+  font-size:11.5px;
+  font-weight:600;
+  color:var(--text-muted);
+  outline:0;
+  cursor:pointer;
+  transition:border-color .15s,color .15s;
+}
+.custom-select:hover{border-color:var(--border-subtle);color:#FFFFFF}
+
+/* ==========================================================================
+   APP SCREENS CONTAINER
+   ========================================================================== */
+.screens-viewport{
+  flex:1;
+  overflow:hidden;
+  position:relative;
+  display:flex;
+}
+.app-page{
+  position:absolute;
+  inset:0;
+  display:none;
+  flex-direction:column;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+.app-page.active{display:flex}
+.app-page::-webkit-scrollbar{width:4px}
+.app-page::-webkit-scrollbar-thumb{background:#222222;border-radius:4px}
+
+/* --- PAGE 1: NORMAL CONTACTS LIST --- */
+#page-contacts{
+  padding:14px 18px 90px;
+  gap:8px;
+}
+
+/* Contact Card (Clean Apple Contacts Style) */
+.contact-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-hairline);
+  border-radius:14px;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  user-select:none;
+  position:relative;
+  transition:transform .2s cubic-bezier(0.16,1,0.3,1), border-color .18s, background .18s, opacity .24s, max-height .28s;
+}
+.contact-card:hover{
+  background:var(--bg-card-hover);
+  border-color:var(--border-subtle);
+  transform:translateY(-1px);
+}
+.contact-card:active{transform:scale(0.985);background:#1C1C1C}
+
+/* Smooth Slide-Out Disappearance Animation when assigned */
+.contact-card.slide-out-disappear{
+  transform:translateX(105%) scale(0.85);
+  opacity:0;
+  max-height:0;
+  padding-top:0;
+  padding-bottom:0;
+  margin-bottom:0;
+  border-width:0;
+  pointer-events:none;
+  transition:all .28s cubic-bezier(0.16,1,0.3,1);
+}
+
+.c-avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:radial-gradient(circle at top, #282828, #121212);
+  color:#FFFFFF;
+  font-weight:700;
+  font-size:13px;
+  display:grid;
+  place-items:center;
+  flex:none;
+  object-fit:cover;
+  border:1px solid var(--border-hairline);
+}
+.c-info{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+.c-name{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#FFFFFF}
+.c-meta{font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-cat-mono-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-size:10.5px;
+  font-weight:600;
+  padding:2px 8px;
+  border-radius:999px;
+  margin-top:3px;
+  max-width:fit-content;
+  background:#181818;
+  border:1px solid var(--border-hairline);
+  color:var(--text-muted);
+}
+.c-cat-mono-pill .mono-dot{width:5px;height:5px;border-radius:50%;background:#FFFFFF}
+
+.c-right-actions{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex:none;
+}
+.btn-assign-hint{
+  font-size:11px;
+  font-weight:700;
+  color:var(--text-muted);
+  background:#181818;
+  border:1px solid var(--border-hairline);
+  padding:4px 10px;
+  border-radius:999px;
+  transition:all .15s;
+}
+.contact-card:hover .btn-assign-hint{
+  background:#FFFFFF;
+  color:#000000;
+}
+.star-btn{
+  background:none;
+  border:0;
+  color:var(--text-dim);
+  line-height:1;
+  padding:6px;
+  border-radius:6px;
+  transition:all .15s ease;
+}
+.star-btn:hover{color:#FFFFFF;transform:scale(1.15)}
+.star-btn.active{color:#FFFFFF}
+
+/* Empty Queue States */
+.c-empty{
+  padding:64px 20px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  color:var(--text-muted);
+}
+.c-empty-icon{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:#141414;
+  border:1px solid var(--border-hairline);
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  color:#FFFFFF;
+}
+.c-empty h4{font-size:17px;font-weight:700;color:#FFFFFF}
+.c-empty p{font-size:13px;max-width:260px;line-height:1.5;color:var(--text-muted)}
+
+/* --- PAGE 2: SEPARATE PIE CHART PAGE --- */
+#page-chart{
+  padding:20px 20px 96px;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle 500px at 50% 45%, rgba(255,255,255,0.02), transparent 75%), #000000;
+}
+.chart-page-header{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+.chart-title-wrap h2{font-size:1.7rem;font-weight:800;letter-spacing:-0.035em;color:#FFFFFF}
+.chart-title-wrap p{font-size:12.5px;color:var(--text-muted);margin-top:2px}
+
+.pie-container{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  margin:auto 0;
+}
+.pie-svg{
+  width:min(420px, 54vh);
+  height:min(420px, 54vh);
+  max-width:100%;
+  overflow:visible;
+  user-select:none;
+}
+
+/* Slices (THE SINGLE COLORFUL ELEMENT IN THE APPLICATION!) */
+.pie-slice{
+  cursor:pointer;
+  transition:transform .28s cubic-bezier(0.16,1,0.3,1), filter .28s;
+  outline:none;
+}
+.pie-slice path{
+  transition:d .35s cubic-bezier(0.16,1,0.3,1), stroke .2s;
+  stroke:#000000;
+  stroke-width:3.5px;
+}
+.pie-slice:hover,.pie-slice.is-active{
+  transform:scale(1.045);
+  filter:drop-shadow(0 0 28px var(--slice-color, #FFFFFF)) drop-shadow(0 14px 34px rgba(0,0,0,0.9));
+}
+.slice-text{
+  pointer-events:none;
+  font-family:var(--font-sans);
+  text-anchor:middle;
+  font-weight:700;
+  font-size:12.5px;
+  fill:#FFFFFF;
+  letter-spacing:-0.02em;
+}
+.slice-count-badge{
+  pointer-events:none;
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:600;
+  fill:rgba(255,255,255,0.88);
+}
+
+/* Center Hub */
+.center-hub{cursor:pointer;transition:transform .25s ease}
+.center-hub-track{
+  fill:none;
+  stroke:rgba(255,255,255,0.06);
+  stroke-width:2px;
+  stroke-dasharray:2 6;
+}
+.center-hub-ring{
+  fill:none;
+  stroke:#FFFFFF;
+  stroke-width:3.5px;
+  stroke-linecap:round;
+  stroke-dasharray:710;
+  stroke-dashoffset:710;
+  filter:drop-shadow(0 0 8px rgba(255,255,255,0.4));
+  transition:stroke-dashoffset 0.9s cubic-bezier(0.16,1,0.3,1);
+  transform:rotate(-90deg);
+  transform-origin:0 0;
+}
+.center-hub-bg{
+  fill:#0A0A0A;
+  stroke:#1C1C1C;
+  stroke-width:2px;
+  transition:all .2s;
+}
+.center-hub:hover .center-hub-bg{fill:#141414;stroke:#FFFFFF}
+.center-stat-val{
+  font-size:36px;
+  font-weight:800;
+  letter-spacing:-0.045em;
+  fill:#FFFFFF;
+  font-family:var(--font-sans);
+}
+.center-stat-lbl{
+  font-size:9.5px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:0.18em;
+  fill:var(--text-muted);
+}
+.center-stat-sub{
+  font-size:11px;
+  font-weight:600;
+  fill:var(--text-dim);
+  font-family:var(--font-mono);
+}
+
+/* Category Legend Dock under Wheel */
+.category-dock{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
+  width:100%;
+  max-width:440px;
+  margin-top:20px;
+  padding:8px 12px;
+  background:rgba(14,14,14,0.75);
+  border:1px solid var(--border-hairline);
+  border-radius:999px;
+  backdrop-filter:blur(24px);
+  z-index:10;
+}
+.dock-pill{
+  background:#141414;
+  border:1px solid var(--border-hairline);
+  border-radius:999px;
+  padding:6px 14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12.5px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .18s ease;
+  color:#FFFFFF;
+}
+.dock-pill:hover{
+  background:#202020;
+  border-color:var(--border-subtle);
+  transform:translateY(-1px);
+}
+.dock-pill i{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  display:inline-block;
+  flex:none;
+}
+.dock-pill .pill-count{
+  background:#222222;
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:700;
+  padding:1px 6px;
+  border-radius:999px;
+  color:var(--text-muted);
+}
+
+/* --- PAGE 3: CATEGORIES MANAGER --- */
+#page-categories{
+  padding:18px 20px 96px;
+  display:none;
+  flex-direction:column;
+  gap:12px;
+}
+.cat-manager-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:6px;
+}
+.cat-item-row{
+  background:var(--bg-card);
+  border:1px solid var(--border-hairline);
+  border-radius:14px;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor:pointer;
+  transition:all .15s;
+}
+.cat-item-row:hover{background:var(--bg-card-hover);border-color:var(--border-subtle)}
+.cat-item-info{display:flex;align-items:center;gap:12px}
+.cat-item-dot{width:12px;height:12px;border-radius:50%;flex:none}
+.cat-item-name{font-weight:700;font-size:14px;color:#FFFFFF}
+.cat-item-count{font-size:12px;color:var(--text-muted);font-family:var(--font-mono)}
+
+/* ==========================================================================
+   BOTTOM NAVIGATION BAR (iOS TAB BAR STYLE)
+   ========================================================================== */
+.bottom-tab-bar{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:68px;
+  background:rgba(10,10,10,0.88);
+  backdrop-filter:blur(24px);
+  border-top:1px solid var(--border-hairline);
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  z-index:30;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tab-btn{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  color:var(--text-muted);
+  font-size:11px;
+  font-weight:600;
+  position:relative;
+  transition:all .15s ease;
+}
+.tab-btn:hover{color:#FFFFFF}
+.tab-btn.active{color:#FFFFFF;font-weight:700}
+.tab-btn svg{transition:transform .15s}
+.tab-btn.active svg{transform:scale(1.1)}
+.tab-nav-badge{
+  position:absolute;
+  top:8px;
+  right:calc(50% - 22px);
+  background:#FFFFFF;
+  color:#000000;
+  font-size:10px;
+  font-weight:800;
+  font-family:var(--font-mono);
+  padding:1px 5px;
+  border-radius:999px;
+  line-height:1.2;
+}
+
+/* ==========================================================================
+   QUICK ASSIGN BOTTOM SHEET / MODAL
+   ========================================================================== */
+.sheet-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(8px);
+  z-index:90;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .24s ease;
+}
+.sheet-backdrop.open{opacity:1;pointer-events:auto}
+
+.quick-sheet{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  translate:-50% 100%;
+  width:100%;
+  max-width:540px;
+  background:#111111;
+  border-top:1px solid var(--border-medium);
+  border-radius:24px 24px 0 0;
+  box-shadow:0 -20px 60px rgba(0,0,0,0.95);
+  z-index:95;
+  display:flex;
+  flex-direction:column;
+  max-height:82vh;
+  transition:translate .28s cubic-bezier(0.16,1,0.3,1);
+  padding-bottom:max(16px, env(safe-area-inset-bottom));
+}
+.quick-sheet.open{translate:-50% 0}
+
+.sheet-handle{
+  width:40px;
+  height:4px;
+  border-radius:2px;
+  background:#333333;
+  margin:10px auto 4px;
+}
+.sheet-header{
+  padding:14px 22px 12px;
+  border-bottom:1px solid var(--border-hairline);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.sheet-title-box h3{font-size:16px;font-weight:800;color:#FFFFFF}
+.sheet-title-box p{font-size:12px;color:var(--text-muted);margin-top:2px}
+.sheet-body{
+  flex:1;
+  overflow-y:auto;
+  padding:14px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.sheet-body::-webkit-scrollbar{width:4px}
+.sheet-body::-webkit-scrollbar-thumb{background:#222;border-radius:4px}
+
+.assign-cat-row{
+  background:#181818;
+  border:1px solid var(--border-hairline);
+  border-radius:14px;
+  padding:13px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  transition:all .15s ease;
+  width:100%;
+  text-align:left;
+}
+.assign-cat-row:hover{background:#222222;border-color:var(--border-subtle);transform:scale(1.01)}
+.assign-cat-row:active{transform:scale(0.985)}
+.assign-cat-row.is-current{border-color:#FFFFFF;background:#202020}
+.cat-dot{width:12px;height:12px;border-radius:50%;display:inline-block;flex:none}
+.cat-row-name{flex:1;font-weight:700;font-size:14px;color:#FFFFFF}
+.cat-row-count{font-size:12px;color:var(--text-muted);font-family:var(--font-mono)}
+.cat-check{font-size:14px;color:#FFFFFF;font-weight:800}
+
+.sheet-footer-actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 20px 4px;
+  border-top:1px solid var(--border-hairline);
+}
+
+/* ==========================================================================
+   CATEGORY CONTACTS DRAWER & MODALS
+   ========================================================================== */
+.drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  width:100%;
+  max-width:540px;
+  background:#0B0B0B;
+  box-shadow:-20px 0 60px rgba(0,0,0,0.9);
+  display:flex;
+  flex-direction:column;
+  z-index:80;
+  translate:100% 0;
+  transition:translate .3s cubic-bezier(0.16,1,0.3,1);
+}
+.drawer.open{translate:0 0}
+.drawer-header{
+  padding:18px 20px;
+  border-bottom:1px solid var(--border-hairline);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.cat-pill-badge{display:inline-flex;align-items:center;gap:9px;font-size:17px;font-weight:700;color:#FFFFFF}
+.drawer-actions-row{
+  display:flex;
+  gap:8px;
+  padding:10px 20px;
+  border-bottom:1px solid var(--border-hairline);
+  background:#080808;
+}
+.drawer-body{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.drawer-contact-item{
+  background:#121212;
+  border:1px solid var(--border-hairline);
+  border-radius:12px;
+  padding:11px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.drawer-item-info{flex:1;min-width:0}
+.drawer-item-name{font-size:13.5px;font-weight:600;color:#FFFFFF}
+.drawer-item-sub{font-size:11.5px;color:var(--text-muted)}
+.btn-remove-cat{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:12px;
+  color:var(--text-muted);
+  border:1px solid var(--border-hairline);
+}
+.btn-remove-cat:hover{color:#FFFFFF;border-color:#FFFFFF}
+
+/* Monochrome Modal Dialog */
+dialog{
+  border:1px solid var(--border-hairline);
+  border-radius:20px;
+  background:#0E0E0E;
+  color:#FFFFFF;
+  padding:24px;
+  width:min(440px,92vw);
+  margin:auto;
+  box-shadow:0 30px 90px rgba(0,0,0,0.95);
+  animation:dlgFade .2s ease;
+}
+dialog::backdrop{background:rgba(0,0,0,0.8);backdrop-filter:blur(8px)}
+@keyframes dlgFade{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+dialog h3{font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:14px;color:#FFFFFF}
+dialog form,dialog>div{display:grid;gap:14px}
+dialog input[type=text],dialog input[type=search]{
+  width:100%;
+  background:#141414;
+  border:1px solid var(--border-hairline);
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:14px;
+  color:#FFFFFF;
+}
+dialog input:focus{border-color:#FFFFFF;outline:0}
+
+/* Swatches for choosing Category Color on Wheel */
+.color-picker-grid{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.c-swatch{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  cursor:pointer;
+  border:2px solid transparent;
+  transition:transform .15s,border-color .15s;
+}
+.c-swatch:hover{transform:scale(1.15)}
+.c-swatch.active{border-color:#FFFFFF;transform:scale(1.15);box-shadow:0 0 14px var(--swatch-color)}
+
+/* Toast Notification */
+#toast{
+  position:fixed;
+  top:24px;
+  left:50%;
+  translate:-50% -30px;
+  opacity:0;
+  background:#141414;
+  border:1px solid #333333;
+  color:#FFFFFF;
+  padding:10px 20px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  box-shadow:0 16px 40px rgba(0,0,0,0.8);
+  transition:.28s cubic-bezier(0.16,1,0.3,1);
+  pointer-events:none;
+  z-index:100;
+}
+#toast.show{opacity:1;translate:-50% 0}
+.spin svg{animation:spin 1s linear infinite}@keyframes spin{to{rotate:360deg}}
+</style>
+</head>
+<body>
+
+<!-- LANDING PAGE -->
+<div id="land">
+  <nav class="landing-nav">
+    <a href="/" class="nav-brand">
+      <div class="nav-dot"></div>
+      <span>ContactFlow</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:10px">
+      <a class="btn-ghost" href="/api/auth/demo">Try Live Studio</a>
+      <a class="btn-white" href="/api/auth/google">Sign in</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-tag">Mobile Contact Studio</div>
+    <h1>Your network.<br>Balanced in flow.</h1>
+    <p class="lead">Tap any contact to instantly assign them to a category. Watch them organize into a separate, breathtaking radial spectrum with real-time analytics.</p>
+    <div class="hero-btns">
+      <a class="btn-white" href="/api/auth/google">Continue with Google</a>
+      <a class="btn-ghost" href="/api/auth/demo">Launch Demo Studio →</a>
+    </div>
+  </section>
+</div>
+
+<!-- APP WORKSPACE (MOBILE-FIRST STUDIO SHELL) -->
+<div id="app">
+  <!-- STICKY TOP APP BAR -->
+  <header class="app-header">
+    <div class="header-top-row">
+      <div class="header-brand">
+        <div class="header-brand-dot"></div>
+        <span>ContactFlow</span>
+        <span class="header-badge" id="app-badge">Live</span>
+      </div>
+      <div class="header-actions">
+        <button id="btn-sync" class="icon-btn" title="Sync Google Contacts">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 8a5.5 5.5 0 1 1-1.7-4M13.5 2.5V5.5h-3"/></svg>
+        </button>
+        <button id="btn-settings" class="icon-btn" title="Settings">⚙</button>
+      </div>
+    </div>
+
+    <!-- Search Input (Active on Contacts page) -->
+    <div class="search-bar" id="search-bar-wrap">
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg>
+      <input id="q" type="search" placeholder="Search contacts..." aria-label="Search contacts">
+      <button id="q-clear" style="display:none;color:var(--text-muted);font-size:11px">✕</button>
+    </div>
+
+    <!-- Filter Tabs (Active on Contacts page) -->
+    <div class="segmented-control" id="contacts-tabs-wrap">
+      <button class="seg-tab active" data-tab="unsorted">
+        <span>To Place</span>
+        <span class="seg-badge" id="badge-unsorted">0</span>
+      </button>
+      <button class="seg-tab" data-tab="all">
+        <span>All</span>
+        <span class="seg-badge" id="badge-all">0</span>
+      </button>
+      <button class="seg-tab" data-tab="fav">
+        <span>Starred</span>
+        <span class="seg-badge" id="badge-fav">0</span>
+      </button>
+    </div>
+
+    <!-- Sub Filters (Company & Sort) -->
+    <div class="filter-sub-bar" id="contacts-filters-wrap">
+      <select id="co-filter" class="custom-select" aria-label="Filter by company"><option value="">All Companies</option></select>
+      <select id="sort-filter" class="custom-select" style="max-width:110px" aria-label="Sort contacts">
+        <option value="az">A to Z</option>
+        <option value="za">Z to A</option>
+        <option value="new">Recent</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- SCREEN VIEWPORT -->
+  <main class="screens-viewport">
+    <!-- PAGE 1: NORMAL CONTACTS LIST -->
+    <section id="page-contacts" class="app-page active">
+      <div id="contact-list" style="display:flex;flex-direction:column;gap:8px"></div>
+    </section>
+
+    <!-- PAGE 2: SEPARATE PIE CHART PAGE -->
+    <section id="page-chart" class="app-page">
+      <div class="chart-page-header">
+        <div class="chart-title-wrap">
+          <h2>Distribution</h2>
+          <p>Real-time radial spectrum of your network</p>
+        </div>
+        <button class="btn-white" id="btn-chart-add-cat" style="padding:6px 16px;font-size:12px">
+          + Category
+        </button>
+      </div>
+
+      <!-- The Focused Interactive Donut Wheel -->
+      <div class="pie-container">
+        <svg id="pie-svg" viewBox="0 0 640 640" class="pie-svg">
+          <defs id="pie-defs"></defs>
+          <g id="pie-slices-group" transform="translate(320, 320)"></g>
+          
+          <!-- Center Chronograph Hub -->
+          <g id="pie-center-hub" transform="translate(320, 320)" class="center-hub">
+            <circle r="104" class="center-hub-bg"/>
+            <circle r="113" class="center-hub-track"/>
+            <circle r="113" class="center-hub-ring" id="center-progress-ring"/>
+            <g id="center-content">
+              <text class="center-stat-val" id="hub-pct" y="-8" text-anchor="middle">0%</text>
+              <text class="center-stat-lbl" y="16" text-anchor="middle">Organized</text>
+              <text class="center-stat-sub" id="hub-counts" y="36" text-anchor="middle">0 of 0</text>
+            </g>
+          </g>
+        </svg>
+
+        <!-- Category Legend Pills -->
+        <div class="category-dock" id="category-dock"></div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: CATEGORIES MANAGER -->
+    <section id="page-categories" class="app-page">
+      <div class="cat-manager-header">
+        <h2 style="font-size:1.5rem;font-weight:800;color:#FFFFFF">Categories</h2>
+        <button class="btn-white" id="btn-cat-add" style="padding:6px 16px;font-size:12px">+ New</button>
+      </div>
+      <div id="cat-manager-list" style="display:flex;flex-direction:column;gap:8px"></div>
+    </section>
+  </main>
+
+  <!-- BOTTOM TAB NAVIGATION (iOS STYLE) -->
+  <nav class="bottom-tab-bar" id="bottom-bar">
+    <button class="tab-btn active" data-page="contacts">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      <span>Contacts</span>
+      <span class="tab-nav-badge" id="nav-badge-unsorted">0</span>
+    </button>
+    <button class="tab-btn" data-page="chart">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+        <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+      </svg>
+      <span>Pie Chart</span>
+    </button>
+    <button class="tab-btn" data-page="categories">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+        <circle cx="7" cy="7" r="1.5" fill="currentColor"/>
+      </svg>
+      <span>Categories</span>
+    </button>
+  </nav>
+
+  <!-- QUICK ASSIGN BOTTOM SHEET -->
+  <div class="sheet-backdrop" id="sheet-backdrop"></div>
+  <aside class="quick-sheet" id="quick-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title-box">
+        <h3 id="sheet-contact-name">Assign Contact</h3>
+        <p id="sheet-contact-sub">Tap a category to place this contact</p>
+      </div>
+      <button class="icon-btn" id="btn-close-sheet" style="width:30px;height:30px">✕</button>
+    </div>
+    <div class="sheet-body" id="sheet-cat-list"></div>
+    <div class="sheet-footer-actions">
+      <button class="btn-ghost" id="btn-sheet-uncat" style="padding:4px 12px;font-size:11.5px">Uncategorize</button>
+      <button class="btn-ghost" id="btn-sheet-info" style="padding:4px 12px;font-size:11.5px">View Details</button>
+      <button class="btn-white" id="btn-sheet-new-cat" style="padding:4px 14px;font-size:11.5px">+ Category</button>
+    </div>
+  </aside>
+
+  <!-- Category Members Drawer -->
+  <aside id="cat-drawer" class="drawer" inert>
+    <div class="drawer-header">
+      <div class="cat-pill-badge" id="cdrawer-pill">
+        <i id="cdrawer-dot" style="width:10px;height:10px;border-radius:50%;display:inline-block"></i>
+        <span id="cdrawer-name">Category</span>
+      </div>
+      <button class="icon-btn" id="btn-close-cdrawer">✕</button>
+    </div>
+    <div class="drawer-actions-row">
+      <button class="btn-ghost" id="btn-rename-cat" style="padding:4px 12px;font-size:11.5px">Edit</button>
+      <button class="btn-ghost" id="btn-delete-cat" style="padding:4px 12px;font-size:11.5px">Delete</button>
+    </div>
+    <div class="drawer-body" id="cdrawer-list"></div>
+  </aside>
+
+  <!-- Contact Details Drawer -->
+  <aside id="panel" class="drawer" inert></aside>
+</div>
+
+<!-- Modal Dialog -->
+<dialog id="dlg"></dialog>
+<div id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* State */
+const S={
+  me:null,
+  contacts:[],
+  cats:[],
+  page:'contacts', // 'contacts', 'chart', 'categories'
+  tab:'unsorted',  // 'unsorted', 'all', 'fav'
+  q:'',
+  co:'',
+  sort:'az',
+  selContactId:null,
+  activeCatId:null,
+  syncing:false,
+  loading:true,
+  err:null,
+  assigningContactId:null
+};
+
+/* Vivid Palette for the Pie Chart slices (The ONLY color in the entire UI!) */
+const PIE_PALETTE=[
+  '#6366F1', // Indigo
+  '#0EA5E9', // Sky Blue
+  '#10B981', // Emerald
+  '#F59E0B', // Amber
+  '#F43F5E', // Rose
+  '#8B5CF6', // Purple
+  '#06B6D4', // Cyan
+  '#EC4899', // Pink
+  '#14B8A6', // Teal
+  '#EAB308'  // Yellow
+];
+
+/* API Helper */
+const api=async(p,o={})=>{
+  let r;
+  try{
+    r=await fetch('/api'+p,{
+      method:o.method||'GET',
+      headers:{'Content-Type':'application/json','X-CF':'1'},
+      body:o.body?JSON.stringify(o.body):undefined
+    });
+  }catch{
+    throw Object.assign(new Error("Network connection error. Check your connection."),{status:0});
+  }
+  if(!r.ok){
+    const e=await r.json().catch(()=>({}));
+    throw Object.assign(new Error(e.error||'Request failed.'),{status:r.status});
+  }
+  return r.status===204?null:r.json();
+};
+
+/* Audio Pop on Assignment */
+function playAudioPing(freq=640){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.type='sine';
+    osc.frequency.setValueAtTime(freq,ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(freq*1.35,ctx.currentTime+0.05);
+    gain.gain.setValueAtTime(0.08,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.22);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime+0.23);
+  }catch(e){}
+}
+
+/* Toast */
+let toastTimer;
+function toast(msg,ok=false){
+  const t=$('#toast');
+  t.innerHTML=(ok?'<span style="color:#FFFFFF">✓</span> ':'')+esc(msg);
+  t.className='show';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.className='',2400);
+}
+
+const dlg=$('#dlg');
+const modal=h=>{dlg.innerHTML=h;dlg.showModal()};
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+
+const ini=n=>(n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const avHtml=(c,cl='')=>c.photo_url?`<img class="c-avatar ${cl}" src="${esc(c.photo_url)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<span class="c-avatar ${cl}">${esc(ini(c.name))}</span>`;
+
+/* ==========================================================================
+   PAGE NAVIGATION (BOTTOM TAB BAR)
+   ========================================================================== */
+function switchPage(pageName){
+  S.page=pageName;
+  try { history.replaceState(null, '', '#' + pageName); } catch(e){}
+  $$('.tab-btn').forEach(btn=>btn.classList.toggle('active', btn.dataset.page===pageName));
+  $$('.app-page').forEach(page=>page.classList.toggle('active', page.id===`page-${pageName}`));
+
+  // Show/hide search & filter in header based on page
+  const isContacts = pageName==='contacts';
+  $('#search-bar-wrap').style.display = isContacts ? 'flex' : 'none';
+  $('#contacts-tabs-wrap').style.display = isContacts ? 'grid' : 'none';
+  $('#contacts-filters-wrap').style.display = isContacts ? 'flex' : 'none';
+
+  if(pageName==='chart') renderPieChart();
+  if(pageName==='categories') renderCategoriesPage();
+}
+
+$$('.tab-btn').forEach(btn=>{
+  btn.onclick=()=>switchPage(btn.dataset.page);
+});
+
+/* ==========================================================================
+   PAGE 1: CONTACTS LIST & QUICK-ASSIGN DISAPPEARANCE
+   ========================================================================== */
+function getFilteredContacts(){
+  let list=S.contacts;
+  if(S.tab==='unsorted') list=list.filter(c=>!c.categoryId);
+  else if(S.tab==='fav') list=list.filter(c=>c.favorite);
+
+  if(S.co) list=list.filter(c=>c.organization===S.co);
+  if(S.q) list=list.filter(c=>c._h.includes(S.q));
+
+  const sorters={
+    az:(a,b)=>(a.name||'').localeCompare(b.name||''),
+    za:(a,b)=>(b.name||'').localeCompare(a.name||''),
+    new:(a,b)=>(b.created_at||'').localeCompare(a.created_at||'')
+  };
+  return [...list].sort(sorters[S.sort]||sorters.az);
+}
+
+function renderContactCard(c){
+  const cat=S.cats.find(k=>k.id===c.categoryId);
+  return `
+  <article class="contact-card" data-id="${c.id}" role="button" tabindex="0">
+    ${avHtml(c)}
+    <div class="c-info">
+      <span class="c-name">${esc(c.name)}</span>
+      <span class="c-meta">${esc([c.job_title,c.organization].filter(Boolean).join(' • ')||c.emails?.[0]?.value||c.phones?.[0]?.value||'No details')}</span>
+      ${cat?`<span class="c-cat-mono-pill"><span class="mono-dot"></span><span>${esc(cat.name)}</span></span>`:''}
+    </div>
+    <div class="c-right-actions">
+      <span class="btn-assign-hint">${cat?'Change':'Assign'}</span>
+      <button class="star-btn ${c.favorite?'active':''}" data-act="toggle-fav" data-id="${c.id}" aria-label="Favorite">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="${c.favorite?'#FFFFFF':'none'}" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </button>
+    </div>
+  </article>`;
+}
+
+function updateBadges(){
+  const unsortedCnt=S.contacts.filter(c=>!c.categoryId).length;
+  const favCnt=S.contacts.filter(c=>c.favorite).length;
+  $('#badge-unsorted').textContent=unsortedCnt;
+  $('#badge-all').textContent=S.contacts.length;
+  $('#badge-fav').textContent=favCnt;
+  $('#nav-badge-unsorted').textContent=unsortedCnt;
+  $('#nav-badge-unsorted').style.display=unsortedCnt>0?'block':'none';
+}
+
+function renderContactsList(){
+  updateBadges();
+
+  const listEl=$('#contact-list');
+  if(S.loading){
+    listEl.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-muted)">Loading contacts…</div>';
+    return;
+  }
+  if(S.err){
+    const isPerm=S.err.includes('permission');
+    listEl.innerHTML=`<div class="c-empty">
+      <div class="c-empty-icon">⚠️</div>
+      <h4>Sync Notice</h4>
+      <p>${esc(S.err)}</p>
+      ${isPerm?'<a class="btn-white" style="margin-top:10px" href="/api/auth/google">Grant Permission</a>':'<button class="btn-ghost" data-act="sync">Retry</button>'}
+    </div>`;
+    return;
+  }
+
+  const items=getFilteredContacts();
+  if(!items.length){
+    const msgs={
+      unsorted:['All Organized','Every contact has been placed into a category.'],
+      fav:['No Favorites','Tap the star icon on any contact to bookmark them here.'],
+      all:['No Contacts Found','Try adjusting your search query or company filter.']
+    };
+    const m=msgs[S.tab]||msgs.all;
+    listEl.innerHTML=`<div class="c-empty">
+      <div class="c-empty-icon">${S.tab==='unsorted'?'✓':'★'}</div>
+      <h4>${m[0]}</h4>
+      <p>${m[1]}</p>
+      ${S.tab==='unsorted'?'<button class="btn-ghost" style="margin-top:12px" onclick="switchPage(\'chart\')">View Pie Chart →</button>':''}
+    </div>`;
+    return;
+  }
+
+  listEl.innerHTML=items.map(renderContactCard).join('');
+}
+
+/* ==========================================================================
+   QUICK ASSIGN SHEET (TAP CONTACT -> CHOOSE CATEGORY -> DISAPPEARS)
+   ========================================================================== */
+function openAssignSheet(contactId){
+  const c=S.contacts.find(x=>x.id===contactId);
+  if(!c) return;
+  S.assigningContactId=c.id;
+
+  $('#sheet-contact-name').textContent=`Place "${c.name}"`;
+  $('#sheet-contact-sub').textContent=c.categoryId ? 'Currently categorized. Tap to switch:' : 'Choose a category to organize this contact:';
+
+  const listEl=$('#sheet-cat-list');
+  if(!S.cats.length){
+    listEl.innerHTML=`
+      <div style="padding:24px;text-align:center;color:var(--text-muted)">
+        <p>No categories created yet.</p>
+        <button class="btn-white" style="margin-top:12px" onclick="categoryModal()">+ Create First Category</button>
+      </div>
+    `;
+  } else {
+    listEl.innerHTML=S.cats.map(k=>{
+      const isCur = k.id===c.categoryId;
+      const count = S.contacts.filter(x=>x.categoryId===k.id).length;
+      return `
+        <button class="assign-cat-row ${isCur?'is-current':''}" data-cat-id="${k.id}">
+          <span class="cat-dot" style="background:${k.color};box-shadow:0 0 10px ${k.color}88"></span>
+          <span class="cat-row-name">${esc(k.name)}</span>
+          <span class="cat-row-count">${count} contacts</span>
+          ${isCur?'<span class="cat-check">✓</span>':''}
+        </button>
+      `;
+    }).join('');
+  }
+
+  $('#btn-sheet-uncat').style.display=c.categoryId?'inline-flex':'none';
+
+  $('#sheet-backdrop').classList.add('open');
+  $('#quick-sheet').classList.add('open');
+}
+
+function closeAssignSheet(){
+  $('#sheet-backdrop').classList.remove('open');
+  $('#quick-sheet').classList.remove('open');
+  S.assigningContactId=null;
+}
+
+$('#btn-close-sheet').onclick=closeAssignSheet;
+$('#sheet-backdrop').onclick=closeAssignSheet;
+
+async function assignContact(contactId, catId){
+  const c=S.contacts.find(x=>x.id===contactId);
+  if(!c) return;
+
+  const prevCatId=c.categoryId;
+  c.categoryId=catId;
+
+  // Sound pop & haptics
+  playAudioPing();
+  navigator.vibrate?.(25);
+
+  // Close sheet immediately for instant responsive feel
+  closeAssignSheet();
+
+  // If in "To Place" (unsorted) tab and category assigned, smoothly disappear
+  if(S.tab==='unsorted' && catId){
+    const cardEl=$(`#contact-list [data-id="${contactId}"]`);
+    if(cardEl){
+      cardEl.classList.add('slide-out-disappear');
+      setTimeout(()=>{
+        cardEl.remove();
+        updateBadges();
+        const remaining = $$('#contact-list .contact-card');
+        if(!remaining.length){
+          renderContactsList();
+        }
+      }, 280);
+    }
+  } else {
+    renderContactsList();
+  }
+
+  updateBadges();
+  renderPieChart();
+  renderCategoriesPage();
+
+  const targetCat=S.cats.find(k=>k.id===catId);
+  toast(`Moved to ${targetCat?targetCat.name:'Unsorted'}`, true);
+
+  // Background API update
+  try{
+    await api(`/contacts/${contactId}/category`,{
+      method:'PUT',
+      body:{categoryId:catId}
+    });
+  }catch(err){
+    c.categoryId=prevCatId;
+    renderContactsList();
+    toast("Couldn't save change. Restored.");
+  }
+}
+
+// Sheet Buttons
+$('#btn-sheet-uncat').onclick=()=>{
+  if(S.assigningContactId) assignContact(S.assigningContactId, null);
+};
+$('#btn-sheet-info').onclick=()=>{
+  const cid=S.assigningContactId;
+  closeAssignSheet();
+  if(cid) openContactDrawer(cid);
+};
+$('#btn-sheet-new-cat').onclick=()=>{
+  closeAssignSheet();
+  categoryModal();
+};
+
+/* ==========================================================================
+   PAGE 2: SEPARATE PIE CHART PAGE (RADIAL SPECTRUM)
+   ========================================================================== */
+function hexToLighter(hex, amt=28){
+  try{
+    let num=parseInt(hex.replace('#',''),16);
+    let R=Math.min(255,(num>>16)+amt);
+    let G=Math.min(255,((num>>8)&0x00FF)+amt);
+    let B=Math.min(255,(num&0x0000FF)+amt);
+    return '#'+((1<<24)+(R<<16)+(G<<8)+B).toString(16).slice(1);
+  }catch(e){return hex;}
+}
+
+function polarToCartesian(cx, cy, r, angleInDegrees) {
+  const rad = (angleInDegrees - 90) * Math.PI / 180.0;
+  return { x: cx + (r * Math.cos(rad)), y: cy + (r * Math.sin(rad)) };
+}
+
+function describeArcSlice(cx, cy, rOuter, rInner, startAngle, endAngle, padAngle = 2.2) {
+  const diff = endAngle - startAngle;
+  if (diff >= 359.9) {
+    const half1 = describeArcSlice(cx, cy, rOuter, rInner, 0, 180, 0);
+    const half2 = describeArcSlice(cx, cy, rOuter, rInner, 180, 360, 0);
+    return half1 + ' ' + half2;
+  }
+  const actualStart = startAngle + padAngle;
+  const actualEnd = endAngle - padAngle;
+  if (actualEnd <= actualStart) return '';
+  const p1 = polarToCartesian(cx, cy, rOuter, actualStart);
+  const p2 = polarToCartesian(cx, cy, rOuter, actualEnd);
+  const p3 = polarToCartesian(cx, cy, rInner, actualEnd);
+  const p4 = polarToCartesian(cx, cy, rInner, actualStart);
+  const largeArcFlag = (actualEnd - actualStart) <= 180 ? 0 : 1;
+  return ['M',p1.x,p1.y,'A',rOuter,rOuter,0,largeArcFlag,1,p2.x,p2.y,'L',p3.x,p3.y,'A',rInner,rInner,0,largeArcFlag,0,p4.x,p4.y,'Z'].join(' ');
+}
+
+function computeSlices(cats, contacts) {
+  const n = cats.length;
+  if (!n) return [];
+  const counts = {};
+  cats.forEach(k => { counts[k.id] = 0; });
+  let totalOrganized = 0;
+  contacts.forEach(c => {
+    if (c.categoryId && counts[c.categoryId] !== undefined) {
+      counts[c.categoryId]++;
+      totalOrganized++;
+    }
+  });
+
+  if (n === 1) {
+    return [{
+      cat: cats[0],
+      count: counts[cats[0].id] || 0,
+      percent: totalOrganized > 0 ? 100 : 0,
+      startAngle: 0,
+      endAngle: 360,
+      midAngle: 180,
+      isFull: true
+    }];
+  }
+
+  const minAngle = Math.min(28, 360 / (n * 1.5));
+  const pool = 360 - (n * minAngle);
+  let currentAngle = 0;
+
+  return cats.map(cat => {
+    const cnt = counts[cat.id] || 0;
+    const extra = totalOrganized > 0 ? (cnt / totalOrganized) * pool : pool / n;
+    const angle = minAngle + extra;
+    const start = currentAngle;
+    const end = currentAngle + angle;
+    currentAngle = end;
+    return {
+      cat,
+      count: cnt,
+      percent: totalOrganized > 0 ? Math.round((cnt / totalOrganized) * 100) : 0,
+      startAngle: start,
+      endAngle: end,
+      midAngle: (start + end) / 2
+    };
+  });
+}
+
+function renderPieChart() {
+  const slicesGroup = $('#pie-slices-group');
+  const dockEl = $('#category-dock');
+  const defsEl = $('#pie-defs');
+
+  const totalOrganized = S.contacts.filter(c => c.categoryId).length;
+  const totalContacts = S.contacts.length;
+  const pct = totalContacts > 0 ? Math.round((totalOrganized / totalContacts) * 100) : 0;
+
+  // Center hub stats
+  $('#hub-pct').textContent = pct + '%';
+  $('#hub-counts').textContent = `${totalOrganized} of ${totalContacts} sorted`;
+  
+  // Progress ring animation
+  const ring = $('#center-progress-ring');
+  if (ring) {
+    const circum = 710;
+    const offset = circum - (circum * (pct / 100));
+    ring.style.strokeDashoffset = offset;
+  }
+
+  if (!S.cats.length) {
+    defsEl.innerHTML = '';
+    slicesGroup.innerHTML = `
+      <circle r="180" fill="none" stroke="#222222" stroke-width="1.5" stroke-dasharray="6 6"/>
+      <text y="-8" text-anchor="middle" fill="#888888" font-size="13" font-weight="600">No categories created</text>
+      <text y="14" text-anchor="middle" fill="#555555" font-size="11">Tap '+ Category' to begin</text>
+    `;
+    dockEl.innerHTML = '';
+    return;
+  }
+
+  // Glowing SVG linear gradients
+  defsEl.innerHTML = S.cats.map(k => `
+    <linearGradient id="slice-grad-${k.id}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="${hexToLighter(k.color, 32)}"/>
+      <stop offset="100%" stop-color="${k.color}"/>
+    </linearGradient>
+  `).join('');
+
+  const slices = computeSlices(S.cats, S.contacts);
+
+  const rOuter = 246;
+  const rInner = 124;
+  let slicesHtml = '';
+
+  slices.forEach(s => {
+    const pathD = describeArcSlice(0, 0, rOuter, rInner, s.startAngle, s.endAngle, 2.2);
+    const col = s.cat.color;
+    const rLabel = (rInner + rOuter) / 2;
+    const labelPos = polarToCartesian(0, 0, rLabel, s.midAngle);
+    const angleSpan = s.endAngle - s.startAngle;
+
+    slicesHtml += `
+      <g class="pie-slice" data-cat-id="${s.cat.id}" style="--slice-color:${col}">
+        <path d="${pathD}" fill="url(#slice-grad-${s.cat.id})" stroke="#000000" stroke-width="4px" stroke-linejoin="round"/>
+        <g transform="translate(${labelPos.x}, ${labelPos.y})">
+          ${angleSpan >= 24 ? `
+            <text class="slice-text" y="-1">${esc(s.cat.name)}</text>
+            <text class="slice-count-badge" y="14">${s.count} • ${s.percent}%</text>
+          ` : `
+            <circle cx="0" cy="0" r="3.5" fill="#FFFFFF"/>
+          `}
+        </g>
+      </g>
+    `;
+  });
+
+  slicesGroup.innerHTML = slicesHtml;
+
+  // Dock Pills
+  dockEl.innerHTML = S.cats.map(k => {
+    const cnt = S.contacts.filter(c => c.categoryId === k.id).length;
+    return `
+      <div class="dock-pill" data-cat-id="${k.id}">
+        <i style="background:${k.color};box-shadow:0 0 8px ${k.color}88"></i>
+        <span>${esc(k.name)}</span>
+        <span class="pill-count">${cnt}</span>
+      </div>
+    `;
+  }).join('') + `
+    <button class="dock-pill" id="dock-btn-add" style="border-style:dashed;color:var(--text-muted)">
+      <span style="font-size:14px;line-height:1">+</span> Add
+    </button>
+  `;
+
+  const dockAddBtn = $('#dock-btn-add');
+  if (dockAddBtn) dockAddBtn.onclick = () => categoryModal();
+}
+
+$('#btn-chart-add-cat').onclick=()=>categoryModal();
+
+/* ==========================================================================
+   PAGE 3: CATEGORIES MANAGER PAGE
+   ========================================================================== */
+function renderCategoriesPage(){
+  const listEl=$('#cat-manager-list');
+  if(!S.cats.length){
+    listEl.innerHTML=`
+      <div class="c-empty">
+        <div class="c-empty-icon">+</div>
+        <h4>No Categories</h4>
+        <p>Create categories to group your relationships.</p>
+        <button class="btn-white" style="margin-top:12px" onclick="categoryModal()">Create Category</button>
+      </div>
+    `;
+    return;
+  }
+
+  listEl.innerHTML=S.cats.map(k=>{
+    const count = S.contacts.filter(c=>c.categoryId===k.id).length;
+    return `
+      <div class="cat-item-row" data-cat-id="${k.id}">
+        <div class="cat-item-info">
+          <span class="cat-item-dot" style="background:${k.color};box-shadow:0 0 10px ${k.color}88"></span>
+          <div>
+            <div class="cat-item-name">${esc(k.name)}</div>
+            <div class="cat-item-count">${count} contacts</div>
+          </div>
+        </div>
+        <span style="color:var(--text-muted);font-size:13px">View →</span>
+      </div>
+    `;
+  }).join('');
+}
+
+$('#btn-cat-add').onclick=()=>categoryModal();
+
+/* ==========================================================================
+   CATEGORY MEMBERS DRAWER & CONTACT DETAILS DRAWER
+   ========================================================================== */
+function openCategoryDrawer(catId){
+  const cat = S.cats.find(k => k.id === catId);
+  if (!cat) return;
+  S.activeCatId = cat.id;
+
+  $('#cdrawer-name').textContent = cat.name;
+  $('#cdrawer-dot').style.background = cat.color;
+
+  const contactsInCat = S.contacts.filter(c => c.categoryId === cat.id);
+  const listEl = $('#cdrawer-list');
+
+  if (!contactsInCat.length) {
+    listEl.innerHTML = `
+      <div class="c-empty" style="padding:40px 14px">
+        <h4>No contacts assigned</h4>
+        <p>Go to the Contacts tab and tap on people to place them here.</p>
+      </div>
+    `;
+  } else {
+    listEl.innerHTML = contactsInCat.map(c => `
+      <div class="drawer-contact-item">
+        ${avHtml(c, 'sm')}
+        <div class="drawer-item-info">
+          <div class="drawer-item-name">${esc(c.name)}</div>
+          <div class="drawer-item-sub">${esc(c.job_title || c.organization || c.emails?.[0]?.value || '')}</div>
+        </div>
+        <button class="btn-remove-cat" data-act="remove-cat" data-cid="${c.id}" title="Remove to Unsorted">✕</button>
+      </div>
+    `).join('');
+  }
+
+  const d = $('#cat-drawer');
+  d.classList.add('open');
+  d.inert = false;
+}
+
+function closeCategoryDrawer(){
+  const d = $('#cat-drawer');
+  d.classList.remove('open');
+  d.inert = true;
+  S.activeCatId = null;
+}
+
+$('#btn-close-cdrawer').onclick = closeCategoryDrawer;
+$('#btn-rename-cat').onclick = () => {
+  const cat = S.cats.find(k => k.id === S.activeCatId);
+  if (cat) categoryModal(cat);
+};
+$('#btn-delete-cat').onclick = async () => {
+  const cat = S.cats.find(k => k.id === S.activeCatId);
+  if (!cat) return;
+  if (!confirm(`Delete "${cat.name}"? Contacts in it will move back to To Place.`)) return;
+  try {
+    await api(`/categories/${cat.id}`, { method: 'DELETE' });
+    S.cats = S.cats.filter(k => k.id !== cat.id);
+    S.contacts.forEach(c => { if (c.categoryId === cat.id) c.categoryId = null; });
+    closeCategoryDrawer();
+    renderContactsList();
+    renderPieChart();
+    renderCategoriesPage();
+    toast('Category deleted', true);
+  } catch (err) {
+    toast(err.message);
+  }
+};
+
+function openContactDrawer(cId){
+  const c = S.contacts.find(x => x.id === cId);
+  if (!c) return;
+  S.selContactId = c.id;
+
+  const p = $('#panel');
+  const catOptions = S.cats.map(k => `<option value="${k.id}" ${k.id===c.categoryId?'selected':''}>${esc(k.name)}</option>`).join('');
+
+  p.innerHTML = `
+    <div class="drawer-header">
+      <button class="btn-ghost" data-act="fav" data-id="${c.id}" style="padding:4px 12px;font-size:12px">${c.favorite?'★ Starred':'☆ Star'}</button>
+      <button class="icon-btn" id="btn-close-p">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div style="text-align:center;padding:16px 0">
+        ${avHtml(c, 'lg')}
+        <h2 style="font-size:1.6rem;font-weight:700;margin-top:10px;color:#FFFFFF">${esc(c.name)}</h2>
+        <p style="color:var(--text-muted);font-size:13px">${esc([c.job_title,c.organization].filter(Boolean).join(' at '))}</p>
+      </div>
+
+      <div style="display:grid;gap:6px;margin-top:10px">
+        <label style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em">CATEGORY</label>
+        <select id="p-cat-select" class="custom-select" style="padding:10px 14px">
+          <option value="">Uncategorized</option>
+          ${catOptions}
+        </select>
+      </div>
+
+      ${(c.emails||[]).map(e=>`
+        <div style="display:grid;gap:4px;margin-top:12px">
+          <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">EMAIL</label>
+          <div style="display:flex;align-items:center;justify-content:space-between;background:#141414;padding:9px 12px;border-radius:10px;border:1px solid var(--border-hairline)">
+            <span style="font-size:13px;color:#FFFFFF">${esc(e.value)}</span>
+            <button class="btn-ghost" data-act="copy" data-val="${esc(e.value)}" style="padding:3px 8px;font-size:11px">Copy</button>
+          </div>
+        </div>
+      `).join('')}
+
+      ${(c.phones||[]).map(p=>`
+        <div style="display:grid;gap:4px;margin-top:12px">
+          <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">PHONE</label>
+          <div style="display:flex;align-items:center;justify-content:space-between;background:#141414;padding:9px 12px;border-radius:10px;border:1px solid var(--border-hairline)">
+            <span style="font-size:13px;color:#FFFFFF">${esc(p.value)}</span>
+            <button class="btn-ghost" data-act="copy" data-val="${esc(p.value)}" style="padding:3px 8px;font-size:11px">Copy</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  p.classList.add('open');
+  p.inert = false;
+
+  $('#btn-close-p').onclick = () => { p.classList.remove('open'); p.inert = true; S.selContactId = null; };
+  $('#p-cat-select').onchange = e => {
+    assignContact(c.id, e.target.value || null);
+  };
+}
+
+/* ==========================================================================
+   CATEGORY MODAL (ADD / EDIT)
+   ========================================================================== */
+function categoryModal(cat = {}) {
+  let selectedColor = cat.color || PIE_PALETTE[S.cats.length % PIE_PALETTE.length];
+
+  modal(`
+    <form id="form-cat">
+      <h3>${cat.id ? 'Edit Category' : 'New Category'}</h3>
+      
+      <div style="display:grid;gap:6px">
+        <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">NAME</label>
+        <input name="name" maxlength="28" required autofocus placeholder="e.g. Core Team, Clients, Investors" value="${esc(cat.name||'')}">
+      </div>
+
+      <div style="display:grid;gap:6px;margin-top:6px">
+        <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">WHEEL COLOR</label>
+        <div class="color-picker-grid" id="picker-swatches">
+          ${PIE_PALETTE.map(col => `
+            <div class="c-swatch ${col===selectedColor?'active':''}" data-col="${col}" style="background:${col};--swatch-color:${col}"></div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px">
+        <button type="button" class="btn-ghost" onclick="dlg.close()">Cancel</button>
+        <button class="btn-white">${cat.id ? 'Save' : 'Create'}</button>
+      </div>
+    </form>
+  `);
+
+  $$('#picker-swatches .c-swatch').forEach(s => {
+    s.onclick = () => {
+      $$('#picker-swatches .c-swatch').forEach(x => x.classList.remove('active'));
+      s.classList.add('active');
+      selectedColor = s.dataset.col;
+    };
+  });
+
+  $('#form-cat').onsubmit = async e => {
+    e.preventDefault();
+    const name = e.target.name.value.trim();
+    if (!name) return;
+    try {
+      if (cat.id) {
+        const updated = await api(`/categories/${cat.id}`, { method: 'PATCH', body: { name, color: selectedColor } });
+        Object.assign(S.cats.find(x => x.id === cat.id), updated);
+        toast('Category updated', true);
+      } else {
+        const created = await api('/categories', { method: 'POST', body: { name, color: selectedColor } });
+        S.cats.push(created);
+        toast('Category created', true);
+      }
+      dlg.close();
+      renderPieChart();
+      renderContactsList();
+      renderCategoriesPage();
+      if (S.activeCatId) openCategoryDrawer(S.activeCatId);
+    } catch (err) {
+      toast(err.message);
+    }
+  };
+}
+
+/* ==========================================================================
+   APP INITIALIZATION & DATA LOADING
+   ========================================================================== */
+async function load() {
+  S.err = null;
+  try {
+    const [c, k] = await Promise.all([api('/contacts'), api('/categories')]);
+    S.contacts = c.map(x => ({
+      ...x,
+      _h: [x.name, x.organization, x.job_title, ...(x.emails||[]).map(e=>e.value), ...(x.phones||[]).map(p=>p.value)].filter(Boolean).join(' ').toLowerCase()
+    }));
+    S.cats = k;
+    populateCompanyFilter();
+  } catch (e) {
+    if (e.status === 401) return location.replace('/');
+    S.err = e.message;
+  }
+  S.loading = false;
+  renderContactsList();
+  renderPieChart();
+  renderCategoriesPage();
+}
+
+async function syncContacts() {
+  if (S.syncing) return;
+  S.syncing = true;
+  $('#btn-sync').classList.add('spin');
+  toast('Syncing contacts…');
+
+  try {
+    const r = await api('/contacts/sync', { method: 'POST' });
+    await load();
+    toast(`Synced ${r.count} contacts`, true);
+  } catch (e) {
+    if (e.status === 401) return location.replace('/');
+    toast(e.message);
+  }
+
+  $('#btn-sync').classList.remove('spin');
+  S.syncing = false;
+}
+
+function populateCompanyFilter() {
+  const companies = [...new Set(S.contacts.map(c => c.organization).filter(Boolean))].sort();
+  $('#co-filter').innerHTML = '<option value="">All Companies</option>' + companies.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  $('#co-filter').value = S.co;
+}
+
+/* Global Click Delegation */
+document.addEventListener('click', e => {
+  // Favorite Star toggle
+  const favBtn = e.target.closest('[data-act="toggle-fav"], [data-act="fav"]');
+  if (favBtn) {
+    e.stopPropagation();
+    const id = favBtn.dataset.id;
+    const c = S.contacts.find(x => x.id === id);
+    if (!c) return;
+    c.favorite = !c.favorite;
+    renderContactsList();
+    api(`/contacts/${c.id}/favorite`, { method: 'PUT', body: { favorite: c.favorite } }).catch(() => {
+      c.favorite = !c.favorite;
+      renderContactsList();
+    });
+    return;
+  }
+
+  // Tap a category row inside Quick Assign Sheet
+  const assignCatRow = e.target.closest('.assign-cat-row[data-cat-id]');
+  if (assignCatRow) {
+    const catId = assignCatRow.dataset.catId;
+    if (S.assigningContactId) assignContact(S.assigningContactId, catId);
+    return;
+  }
+
+  // Tap Contact Card in main list -> Open Quick Assign Sheet
+  const card = e.target.closest('.contact-card[data-id]');
+  if (card) {
+    openAssignSheet(card.dataset.id);
+    return;
+  }
+
+  // Tap Slice or Legend Pill on Pie Chart page -> Open Category Drawer
+  const slice = e.target.closest('.pie-slice, .dock-pill[data-cat-id]');
+  if (slice) {
+    openCategoryDrawer(slice.dataset.catId);
+    return;
+  }
+
+  // Tap Category Row on Categories Page -> Open Category Drawer
+  const catRow = e.target.closest('.cat-item-row[data-cat-id]');
+  if (catRow) {
+    openCategoryDrawer(catRow.dataset.catId);
+    return;
+  }
+
+  // Remove contact from category
+  const remBtn = e.target.closest('[data-act="remove-cat"]');
+  if (remBtn) {
+    e.stopPropagation();
+    assignContact(remBtn.dataset.cid, null);
+    if (S.activeCatId) openCategoryDrawer(S.activeCatId);
+    return;
+  }
+
+  // Copy text
+  const copyBtn = e.target.closest('[data-act="copy"]');
+  if (copyBtn) {
+    navigator.clipboard.writeText(copyBtn.dataset.val).then(() => toast('Copied to clipboard', true));
+    return;
+  }
+});
+
+$('#btn-sync').onclick = syncContacts;
+
+// Tab Switching on Contacts Page
+$$('.seg-tab').forEach(tab => {
+  tab.onclick = () => {
+    $$('.seg-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    S.tab = tab.dataset.tab;
+    renderContactsList();
+  };
+});
+
+// Search & filter
+let searchTimer;
+$('#q').oninput = e => {
+  clearTimeout(searchTimer);
+  const val = e.target.value.trim().toLowerCase();
+  $('#q-clear').style.display = val ? 'block' : 'none';
+  searchTimer = setTimeout(() => {
+    S.q = val;
+    renderContactsList();
+  }, 120);
+};
+$('#q-clear').onclick = () => {
+  $('#q').value = '';
+  $('#q-clear').style.display = 'none';
+  S.q = '';
+  renderContactsList();
+};
+
+$('#co-filter').onchange = e => { S.co = e.target.value; renderContactsList(); };
+$('#sort-filter').onchange = e => { S.sort = e.target.value; renderContactsList(); };
+
+// Settings Modal
+$('#btn-settings').onclick = () => {
+  modal(`
+    <h3>Settings</h3>
+    <div style="display:grid;gap:14px">
+      <div style="display:grid;gap:4px">
+        <label style="font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:0.05em">ACCOUNT</label>
+        <div style="font-size:13.5px;color:#FFFFFF"><b>${esc(S.me.name)}</b> (${esc(S.me.email)})</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;border-top:1px solid var(--border-hairline);padding-top:16px">
+        <button class="btn-ghost" onclick="api('/auth/logout',{method:'POST'}).then(()=>location.href='/');">Sign Out</button>
+        <button class="btn-white" onclick="dlg.close()">Done</button>
+      </div>
+    </div>
+  `);
+};
+
+/* Boot */
+(async () => {
+  if (!location.pathname.startsWith('/app')) {
+    try {
+      await api('/auth/me');
+      location.replace('/app');
+    } catch {}
+    return;
+  }
+
+  try {
+    S.me = await api('/auth/me');
+  } catch {
+    return location.replace('/');
+  }
+
+  if (S.me.demo) {
+    $('#app-badge').textContent = 'Demo';
+  }
+
+  await load();
+
+  const initialHash = (location.hash || '').replace('#','');
+  if (['contacts', 'chart', 'categories'].includes(initialHash)) {
+    switchPage(initialHash);
+  } else if (initialHash === 'assign-test' && S.contacts.length) {
+    setTimeout(() => openAssignSheet(S.contacts[0].id), 250);
+  }
+
+  if (!S.err && !S.contacts.length) {
+    await syncContacts();
+  }
+})();
+</script>
+</body>
+</html>
