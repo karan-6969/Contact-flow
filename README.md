@@ -1,5 +1,5 @@
 # ContactFlow
-Your contacts. Finally organized. Google Contacts are read-only; categories live in your Supabase database.
+Your contacts.    Finally organized. Google Contacts are read-only; categories live in your Supabase database.
 
 ## Quick Start (Instant Local Run)
 Zero configuration needed to try it out:
