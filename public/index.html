@@ -1124,29 +1124,26 @@ dialog input:focus{
   .mobile-only{
     display:block;
   }
-  .screen-view{
-    display:none;
-    flex:1;
-    height:calc(100vh - 68px);
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
+  /* Mobile screen views: strictly hide all views, show ONLY the active one */
+  #contacts-bar, #wheel-stage, #page-categories {
+    display: none !important;
+    flex: 1;
+    height: calc(100vh - 68px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .screen-view.active{
-    display:flex !important;
-    flex-direction:column;
+  #contacts-bar.active, #wheel-stage.active, #page-categories.active {
+    display: flex !important;
+    flex-direction: column;
   }
   #contacts-bar{
-    height:calc(100vh - 68px);
-    border-right:none;
+    border-right: none;
   }
   #wheel-stage{
-    height:calc(100vh - 68px);
-    overflow-y:auto;
-    overflow-x:hidden;
-    -webkit-overflow-scrolling:touch;
-    padding:16px 16px 88px;
-    align-items:center;
-    justify-content:flex-start;
+    overflow-x: hidden;
+    padding: 16px 16px 88px;
+    align-items: center;
+    justify-content: flex-start;
   }
   .stage-top-bar{
     margin-bottom:8px;
@@ -1361,7 +1358,7 @@ dialog input:focus{
 
   <!-- iOS BOTTOM TAB BAR (VISIBLE ON MOBILE ONLY) -->
   <nav class="bottom-tab-bar mobile-only" id="bottom-bar">
-    <button class="tab-btn active" data-page="contacts">
+    <button type="button" class="tab-btn active" id="tab-btn-contacts" data-page="contacts">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
         <circle cx="9" cy="7" r="4"/>
@@ -1371,14 +1368,14 @@ dialog input:focus{
       <span>Contacts</span>
       <span class="tab-nav-badge" id="nav-badge-unsorted">0</span>
     </button>
-    <button class="tab-btn" data-page="chart">
+    <button type="button" class="tab-btn" id="tab-btn-chart" data-page="chart">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
         <path d="M22 12A10 10 0 0 0 12 2v10z"/>
       </svg>
       <span>Pie Chart</span>
     </button>
-    <button class="tab-btn" data-page="categories">
+    <button type="button" class="tab-btn" id="tab-btn-categories" data-page="categories">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
         <circle cx="7" cy="7" r="1.5" fill="currentColor"/>
@@ -1579,22 +1576,40 @@ const avHtml=(c,cl='')=>c.photo_url?`<img class="c-avatar ${cl}" src="${esc(c.ph
    MOBILE TAB SWITCHING (MOBILE ONLY)
    ========================================================================== */
 function switchMobilePage(pageName){
+  if (!pageName) return;
   S.page=pageName;
   try { history.replaceState(null, '', '#' + pageName); } catch(e){}
   $$('.tab-btn').forEach(btn=>btn.classList.toggle('active', btn.dataset.page===pageName));
   
-  if(window.innerWidth <= 860){
-    $('#contacts-bar').classList.toggle('active', pageName==='contacts');
-    $('#wheel-stage').classList.toggle('active', pageName==='chart');
-    $('#page-categories').classList.toggle('active', pageName==='categories');
-  }
+  const cBar = $('#contacts-bar');
+  const wStage = $('#wheel-stage');
+  const pCats = $('#page-categories');
+
+  if (cBar) cBar.classList.toggle('active', pageName==='contacts');
+  if (wStage) wStage.classList.toggle('active', pageName==='chart');
+  if (pCats) pCats.classList.toggle('active', pageName==='categories');
 
   if(pageName==='chart') renderPieChart();
   if(pageName==='categories') renderCategoriesPage();
 }
+window.switchMobilePage = switchMobilePage;
+
+const bBar = $('#bottom-bar');
+if (bBar) {
+  bBar.addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (btn && btn.dataset.page) {
+      e.preventDefault();
+      switchMobilePage(btn.dataset.page);
+    }
+  });
+}
 
 $$('.tab-btn').forEach(btn=>{
-  btn.onclick=()=>switchMobilePage(btn.dataset.page);
+  btn.onclick=(e)=>{
+    e.preventDefault();
+    switchMobilePage(btn.dataset.page);
+  };
 });
 
 /* ==========================================================================
